@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
+<bibliotheque>
+    <auteur ident="19031">
+        <nom>nom</nom>
+        <prenom>prenom</prenom>
+        <pays>Pays</pays>
+        <commentaire></commentaire>
+        <photo>URL.png</photo>
+    </auteur>
+    
+    <auteur ident="19032">
+        <prenom>prenom</prenom>
+        <nom>nom</nom>
+        <pays>Pays-bla</pays>
+        <commentaire></commentaire>
+        <photo>URL.svg</photo>
+    </auteur>
+    
+    <auteur ident="19033">
+        <prenom>prenom</prenom>
+        <nom>nom</nom>
+        <pays>Pays salut</pays>
+        <photo>URL.gif</photo>
+    </auteur>
+    
+    <auteur ident="19034">
+        <nom>nom</nom>
+        <prenom>prenom</prenom>
+        <pays>Pays pays-test</pays>
+        <photo>URL.jpeg</photo>
+    </auteur>
+    
+    <livre langue="FR" auteurs="19031 19032 19033 19034">
+        <titre></titre>
+        <anneee></anneee>
+        <prix devise="CAD">0</prix>
+        <couverture></couverture>
+        <commentaire></commentaire>
+    </livre>
+    
+    <livre langue="FR" auteurs="19031">
+        <titre></titre>
+        <anneee></anneee>
+        <prix>100</prix>
+        <couverture></couverture>
+        <commentaire></commentaire>
+    </livre>
+    
+    <livre langue="FR" auteurs="19031">
+        <titre></titre>
+        <anneee></anneee>
+        <prix>100</prix>
+        <commentaire></commentaire>
+    </livre>
+    
+    <livre langue="FR" auteurs="19031">
+        <titre></titre>
+        <anneee></anneee>
+        <prix>100</prix>
+        <couverture></couverture>
+    </livre>
+    
+    <livre langue="FR" auteurs="19031">
+        <titre></titre>
+        <anneee></anneee>
+        <prix devise="USD">100</prix>
+    </livre>
+    
+</bibliotheque>
