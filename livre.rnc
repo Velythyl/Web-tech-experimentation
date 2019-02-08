@@ -1,0 +1,20 @@
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+start = livre
+
+livre = element livre {
+    attribute langue {xsd:string { pattern='([a-z][a-z])|([A-Z][A-Z])'}},
+    attribute auteurs {xsd:string},
+    element titre {xsd:string { pattern='.{1,60}'}}, #minumum est 1 car on ne peut avoir de titres vides
+    element annee {xsd:gYear},
+    prix,
+    element couverture {xsd:string {pattern='(https?)://www\.[a-z0-9]+\.[a-z]{2,5}'}}?,
+    (external "commentaire.rnc")?
+}
+
+prix = element prix {
+    attribute devise {xsd:string}?,
+    xsd:integer { minInclusive = "0" maxInclusive = "100" }
+}
+
+

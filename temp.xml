@@ -1,70 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
 <bibliotheque>
-    <auteur ident="19031">
-        <nom>nom</nom>
-        <prenom>prenom</prenom>
-        <pays>Pays</pays>
-        <commentaire></commentaire>
-        <photo>URL.png</photo>
-    </auteur>
+    <auteurs>
+        <auteur ident="a19031">
+            <nom>nom</nom>
+            <prenom>prenom</prenom>
+            <pays>Pays</pays>
+            <commentaire></commentaire>
+            <photo>URL.png</photo>
+        </auteur>
+        
+        <auteur ident="a19032">
+            <prenom>prenom</prenom>
+            <nom>nom</nom>
+            <pays>Pays-bla</pays>
+            <commentaire></commentaire>
+            <photo>URL.svg</photo>
+        </auteur>
+        
+        <auteur ident="a19033">
+            <prenom>prenom</prenom>
+            <nom>nom</nom>
+            <pays>Pays salut</pays>
+            <photo>URL.gif</photo>
+        </auteur>
+        
+        <auteur ident="a19034">
+            <nom>nom</nom>
+            <prenom>prenom</prenom>
+            <pays>Pays pays-test</pays>
+            <photo>URL.jpeg</photo>
+        </auteur>
+    </auteurs>
     
-    <auteur ident="19032">
-        <prenom>prenom</prenom>
-        <nom>nom</nom>
-        <pays>Pays-bla</pays>
-        <commentaire></commentaire>
-        <photo>URL.svg</photo>
-    </auteur>
+    <livres>
+        <livre langue="FR" auteurs="a19031 a19032 a19033 a19034">
+            <titre>Titre</titre>
+            <annee>1997</annee>
+            <prix devise="CAD">0</prix>
+            <couverture>http://www.bla.com</couverture>
+            <commentaire>Test</commentaire>
+        </livre>
+        
+        <livre langue="FR" auteurs="a19031">
+            <titre>Super titre 24</titre>
+            <annee>2010</annee>
+            <prix>100</prix>
+            <couverture>http://www.bla.com</couverture>
+            <commentaire></commentaire>
+        </livre>
+        
+        <livre langue="FR" auteurs="a19031">
+            <titre>Titre!</titre>
+            <annee>1002</annee>
+            <prix>100</prix>
+            <commentaire></commentaire>
+        </livre>
+        
+        <livre langue="FR" auteurs="a19031">
+            <titre>Titre ti-tre</titre>
+            <annee>1840</annee>
+            <prix>100</prix>
+            <couverture>http://www.bla.com</couverture>
+        </livre>
+        
+        <livre langue="FR" auteurs="a19031">
+            <titre>Titte 2</titre>
+            <annee>2001</annee>
+            <prix devise="USD">100</prix>
+        </livre>
+    </livres>
     
-    <auteur ident="19033">
-        <prenom>prenom</prenom>
-        <nom>nom</nom>
-        <pays>Pays salut</pays>
-        <photo>URL.gif</photo>
-    </auteur>
-    
-    <auteur ident="19034">
-        <nom>nom</nom>
-        <prenom>prenom</prenom>
-        <pays>Pays pays-test</pays>
-        <photo>URL.jpeg</photo>
-    </auteur>
-    
-    <livre langue="FR" auteurs="19031 19032 19033 19034">
-        <titre></titre>
-        <anneee></anneee>
-        <prix devise="CAD">0</prix>
-        <couverture></couverture>
-        <commentaire></commentaire>
-    </livre>
-    
-    <livre langue="FR" auteurs="19031">
-        <titre></titre>
-        <anneee></anneee>
-        <prix>100</prix>
-        <couverture></couverture>
-        <commentaire></commentaire>
-    </livre>
-    
-    <livre langue="FR" auteurs="19031">
-        <titre></titre>
-        <anneee></anneee>
-        <prix>100</prix>
-        <commentaire></commentaire>
-    </livre>
-    
-    <livre langue="FR" auteurs="19031">
-        <titre></titre>
-        <anneee></anneee>
-        <prix>100</prix>
-        <couverture></couverture>
-    </livre>
-    
-    <livre langue="FR" auteurs="19031">
-        <titre></titre>
-        <anneee></anneee>
-        <prix devise="USD">100</prix>
-    </livre>
     
 </bibliotheque>

@@ -3,40 +3,9 @@ datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
 start = bibliotheque
 
 bibliotheque = element bibliotheque {
-    ((livre*, auteur*) | (auteur*, livre*))*
+    ((livres*, auteurs*) | (auteurs*, livres*))*
 }
 
-auteur = element auteur {
-    attribute ident {xsd:ID},
-    ((nom, prenom) | (prenom, nom)),
-    pays,
-    commentaire?,
-    element photo {xsd:string { pattern='.+\.(png|jpg|jpeg|gif|png|svg)' }}
-}
+auteurs = element auteurs {(external "auteur.rnc")*}
 
-nom = element nom{Name}
-prenom = element prenom{Name}
-Name = xsd:string{pattern='.+'} # un pattern qui regarde pour une majuscule, etc, ne ferait pas de sens pour les noms internationnaux (comme des caracteres asiatiques, par exemple, ou d'Atruce)
-
-pays = element pays {
-    xsd:string{pattern='[A-Z]([a-z]|\-| )+'}    #comprends les pays ayant des espaces ou -
-}
-
-commentaire = element commentaire{
-    text
-}
-
-livre = element livre {
-    attribute langue {xsd:string { pattern='([a-z][a-z])|([A-Z][A-Z])'}},
-    attribute auteurs {xsd:string},
-    element titre {xsd:string { pattern='.{1,60}'}}, #minumum est 1 car on ne peut avoir de titres vides
-    element annee {xsd:gYear},
-    prix,
-    element couverture {xsd:string {pattern='(https?)://www\.[a-z0-9]+\.[a-z]{2,5}'}}?,
-    commentaire?
-}
-
-prix = element prix {
-    attribute devise {xsd:string}?,
-    xsd:integer { minInclusive = "0" maxInclusive = "100" }
-}
+livres = element livres {(external "livre.rnc")*}
