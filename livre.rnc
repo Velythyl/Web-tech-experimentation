@@ -4,7 +4,7 @@ start = livre
 
 livre = element livre {
     attribute langue {xsd:string { pattern='([a-z][a-z])|([A-Z][A-Z])'}},
-    attribute auteurs {xsd:string},
+    attribute auteurs {xsd:IDREFS}*,
     element titre {xsd:string { pattern='.{1,60}'}}, #minumum est 1 car on ne peut avoir de titres vides
     element annee {xsd:gYear},
     prix,
