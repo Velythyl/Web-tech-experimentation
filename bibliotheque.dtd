@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ENTITY  % livres SYSTEM "livre.dtd">
+<!ENTITY % auteurs SYSTEM "auteur.dtd">
+<!ELEMENT bibliotheque (se)>
+<!ELEMENT se (auteurs)>
