@@ -13,7 +13,7 @@ livre = element livre {
 }
 
 prix = element prix {
-    attribute devise {xsd:string}?,
+    attribute devise {"CAD"|"USD"|"EUR"|"YEN"|"CHF"}?,  # il faudrait les autres devises possibles...
     xsd:integer { minInclusive = "0" maxInclusive = "100" }
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
-<?xml-stylesheet type="text/xsl" href="auteurs.xsl"?>
+<?xml-stylesheet type="text/xsl" href="livres.xsl"?>
 <bibliotheque>
     <auteurs>
         <auteur ident="a19031">
@@ -65,8 +65,8 @@
             <couverture>http://www.bla.com</couverture>
         </livre>
         
-        <livre langue="FR" auteurs="a19031">
-            <titre>Titte 2</titre>
+        <livre langue="FR" auteurs="a19038">
+            <titre>Ceci devrait etre en haut</titre>
             <annee>2001</annee>
             <prix devise="USD">100</prix>
         </livre>
