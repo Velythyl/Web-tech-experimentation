@@ -1,3 +1,5 @@
 # IFT3225TP1
 
-Pour avoir un schema de base, on peut peut-être utiliser http://xml.mherman.org/
+TODO xslt:
+  pattern externe pour commentaire
+  idem pour photos
