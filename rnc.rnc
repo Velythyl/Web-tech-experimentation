@@ -3,7 +3,7 @@ datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
 start = bibliotheque
 
 bibliotheque = element bibliotheque {
-    ((livres+, auteurs+) | (auteurs+, livres+))+    # dit en classe qu'on doit avoir au moins un element ici
+    ((livres+, auteurs*)|(auteurs,livres*))+    # dit en classe qu'on doit avoir au moins un element ici
 }
 
 auteurs = element auteurs {(external "auteur.rnc")+}

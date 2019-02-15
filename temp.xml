@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
+<?xml-stylesheet type="text/xsl" href="auteurs.xsl"?>
 <bibliotheque>
     <auteurs>
         <auteur ident="a19031">
             <nom>nom</nom>
             <prenom>prenom</prenom>
             <pays>Pays</pays>
-            <commentaire></commentaire>
+            <commentaire>Gakhga</commentaire>
             <photo>URL.png</photo>
         </auteur>
         
@@ -14,7 +15,7 @@
             <prenom>prenom</prenom>
             <nom>nom</nom>
             <pays>Pays-bla</pays>
-            <commentaire></commentaire>
+            <commentaire>Test jhahja</commentaire>
             <photo>URL.svg</photo>
         </auteur>
         
@@ -47,7 +48,7 @@
             <annee>2010</annee>
             <prix>100</prix>
             <couverture>http://www.bla.com</couverture>
-            <commentaire></commentaire>
+            <commentaire>khbagkhgta</commentaire>
         </livre>
         
         <livre langue="FR" auteurs="a19031">
@@ -71,5 +72,36 @@
         </livre>
     </livres>
     
+    <auteurs>
+        <auteur ident="a19035">
+            <nom>nom</nom>
+            <prenom>prenom</prenom>
+            <pays>Pays</pays>
+            <commentaire>Gakhga</commentaire>
+            <photo>URL.png</photo>
+        </auteur>
+        
+        <auteur ident="a19036">
+            <prenom>prenom</prenom>
+            <nom>nom</nom>
+            <pays>Pays-bla</pays>
+            <commentaire>Test jhahja</commentaire>
+            <photo>URL.svg</photo>
+        </auteur>
+        
+        <auteur ident="a19037">
+            <prenom>prenom</prenom>
+            <nom>nom</nom>
+            <pays>Pays salut</pays>
+            <photo>URL.gif</photo>
+        </auteur>
+        
+        <auteur ident="a19038">
+            <nom>anom</nom>
+            <prenom>prenom</prenom>
+            <pays>Pays pays-test</pays>
+            <photo>URL.jpeg</photo>
+        </auteur>
+    </auteurs>
     
 </bibliotheque>
