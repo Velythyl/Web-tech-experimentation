@@ -19,39 +19,68 @@
             </head>
             <body>
                 <h2>Auteurs de la bibliotheque</h2>
-                <table>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Pays</th>
-                        <th>Commentaire</th>
-                        <th>Photo</th>
-                    </tr>
-                    <xsl:for-each select="bibliotheque/auteurs/auteur">
-                        <xsl:sort select="nom" order="ascending"/>
-                            
+                <xsl:for-each select="bibliotheque/auteurs/auteur">
+                    <xsl:sort select="concat(nom, prenom)" order="ascending"/>
+                    <h1><xsl:value-of select="concat(nom, ', ', prenom)"/></h1>
+                    <p>Pays: <xsl:value-of select="pays"/></p>
+                    
+                    <xsl:variable name="pic" select="photo"/>
+                    
+                    <img height="200">
+                        <xsl:attribute name="src">
+                            <xsl:value-of select="photo"/>
+                        </xsl:attribute>
+                    </img>
+                    
+                    <p>
+                        <xsl:if test="commentaire">
+                            Commentaire: <xsl:value-of select="commentaire"/>
+                        </xsl:if>
+                    </p>
+                    
+                    <xsl:variable name="ID" select="@ident"/>
+                    
+                    <h3>Livres:</h3>
+                    <table>
                         <tr>
-                           <td>
-                           <xsl:value-of select="nom"/>
-                           </td>
-                           <td>
-                           <xsl:value-of select="prenom"/>
-                           </td>
-                           <td>
-                           <xsl:value-of select="pays"/>
-                           </td>
-                           <td>
-                           <xsl:if test="commentaire">
-                           <xsl:value-of select="commentaire"/>
-                           </xsl:if>
-                           </td>
-                           <td>
-                           <xsl:value-of select="photo"/>
-                           </td>
+                            <th>Prix</th>
+                            <th>Titre</th>
+                            <th>Annee</th>
+                            <th>Couverture</th>
+                            <th>Commentaire</th>
                         </tr>
                         
-                    </xsl:for-each>
-                </table>
+                        <xsl:for-each select="//livre">
+                            <xsl:sort select="prix" order="ascending"/>
+                            <xsl:if test="contains(@auteurs, $ID)">
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="prix"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="titre"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="annee"/>
+                                    </td>
+                                    <td>
+                                        <xsl:if test="couverture">
+                                            <xsl:value-of select="couverture"/>
+                                        </xsl:if>
+                                    </td>
+                                    <td>
+                                        <xsl:if test="commentaire">
+                                            <xsl:value-of select="commentaire"/>
+                                        </xsl:if>
+                                    </td>
+                                </tr>
+                            </xsl:if>
+                            
+                        </xsl:for-each>
+                        
+                    </table>
+                </xsl:for-each>
+                
             </body>
         </xhtml>
         

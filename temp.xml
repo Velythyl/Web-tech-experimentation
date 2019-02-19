@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
-<?xml-stylesheet type="text/xsl" href="livres.xsl"?>
+<?xml-stylesheet type="text/xsl" href="auteurs.xsl"?>
 <bibliotheque>
     <auteurs>
         <auteur ident="a19031">
-            <nom>nom</nom>
-            <prenom>prenom</prenom>
+            <nom>nom31</nom>
+            <prenom>prenom31</prenom>
             <pays>Pays</pays>
             <commentaire>Gakhga</commentaire>
             <photo>URL.png</photo>
         </auteur>
         
         <auteur ident="a19032">
-            <prenom>prenom</prenom>
-            <nom>nom</nom>
+            <prenom>prenom32</prenom>
+            <nom>nom32</nom>
             <pays>Pays-bla</pays>
             <commentaire>Test jhahja</commentaire>
             <photo>URL.svg</photo>
@@ -30,7 +30,7 @@
             <nom>nom</nom>
             <prenom>prenom</prenom>
             <pays>Pays pays-test</pays>
-            <photo>URL.jpeg</photo>
+            <photo>vert.jpeg</photo>
         </auteur>
     </auteurs>
     
@@ -51,24 +51,24 @@
             <commentaire>khbagkhgta</commentaire>
         </livre>
         
-        <livre langue="FR" auteurs="a19031">
-            <titre>Titre!</titre>
+        <livre langue="FR" auteurs="a19031 a19032">
+            <titre>Livre a 2$</titre>
             <annee>1002</annee>
-            <prix>100</prix>
+            <prix>2</prix>
             <commentaire></commentaire>
         </livre>
         
         <livre langue="FR" auteurs="a19031">
-            <titre>Titre ti-tre</titre>
+            <titre>Livre a 20$</titre>
             <annee>1840</annee>
-            <prix>100</prix>
+            <prix>20</prix>
             <couverture>http://www.bla.com</couverture>
         </livre>
         
         <livre langue="FR" auteurs="a19038">
-            <titre>Ceci devrait etre en haut</titre>
+            <titre>Ceci devrait etre en haut, livre a 4$</titre>
             <annee>2001</annee>
-            <prix devise="USD">100</prix>
+            <prix devise="USD">4</prix>
         </livre>
     </livres>
     
@@ -78,7 +78,7 @@
             <prenom>prenom</prenom>
             <pays>Pays</pays>
             <commentaire>Gakhga</commentaire>
-            <photo>URL.png</photo>
+            <photo>temp.jpg</photo>
         </auteur>
         
         <auteur ident="a19036">
@@ -97,10 +97,10 @@
         </auteur>
         
         <auteur ident="a19038">
-            <nom>anom</nom>
-            <prenom>prenom</prenom>
+            <nom>a</nom>
+            <prenom>a</prenom>
             <pays>Pays pays-test</pays>
-            <photo>URL.jpeg</photo>
+            <photo>URL.jpg</photo>
         </auteur>
     </auteurs>
     
