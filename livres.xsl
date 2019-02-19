@@ -3,6 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
     version="2.0">
+    <xsl:import href="photo.xsl"/>
     <xsl:output method="xhtml"/>
     
     <xsl:param name="lowPrice" select="2"></xsl:param>
@@ -23,34 +24,41 @@
             </head>
             <body>
                 <h2>Livres de la bibliotheque</h2>
-                <xsl:for-each select="bibliotheque/auteurs/auteur">
+                <xsl:for-each select="//auteur">
                     <xsl:sort select="concat(nom, prenom)"/>
                     
-                    <xsl:variable name="ID" select="@ident"/>
+                    <xsl:call-template name="livreGetter">
+                        <xsl:with-param name="ID" select="@ident"/>
+                    </xsl:call-template>
                     
-                    <xsl:for-each select="//livre">
-                        <xsl:sort select="prix"/>
-                        <xsl:if test="prix>=$lowPrice and $highPrice>=prix and contains(titre, $mot) and starts-with(@auteurs, $ID)">  <!-- < ne marche pas? -->
-                            <h1><xsl:value-of select="titre"/></h1>
-                            <p>Prix: <xsl:value-of select="prix"/></p>
-                            <p>Année: <xsl:value-of select="annee"/></p>
-                            <p><xsl:if test="commentaire">
-                                
-                                Commentaire: <xsl:value-of select="commentaire"/>
-                            </xsl:if></p>
-                            <p><xsl:if test="couverture">
-                                Couverture: <xsl:value-of select="couverture"/>
-                            </xsl:if></p>
-                            
-                            <xsl:call-template name="auteurGetter">
-                                <xsl:with-param name="autList" select="@auteurs"/>
-                            </xsl:call-template>
-                            
-                        </xsl:if>
-                    </xsl:for-each>
                 </xsl:for-each>
             </body>
         </xhtml>
+    </xsl:template>
+    
+    <xsl:template name="livreGetter">
+        <xsl:param name="ID"/>
+        
+        <xsl:for-each select="//livre">
+            <xsl:sort select="prix"/>
+            <xsl:if test="prix>=$lowPrice and $highPrice>=prix and contains(titre, $mot) and starts-with(@auteurs, $ID)">  <!-- < ne marche pas? -->
+                <h1><xsl:value-of select="titre"/></h1>
+                <p>Prix: <xsl:value-of select="prix"/></p>
+                <p>Année: <xsl:value-of select="annee"/></p>
+                <p><xsl:if test="commentaire">
+                    
+                    Commentaire: <xsl:value-of select="commentaire"/>
+                </xsl:if></p>
+                <p><xsl:if test="couverture">
+                    Couverture: <xsl:value-of select="couverture"/>
+                </xsl:if></p>
+                
+                <xsl:call-template name="auteurGetter">
+                    <xsl:with-param name="autList" select="@auteurs"/>
+                </xsl:call-template>
+                
+            </xsl:if>
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:template name="auteurGetter">
@@ -78,7 +86,9 @@
                         <xsl:value-of select="pays"/>
                     </td>
                     <td>
-                        <xsl:value-of select="photo"/>
+                        <xsl:call-template name="photoGetter">
+                            <xsl:with-param name="photo" select="photo"/>
+                        </xsl:call-template>
                     </td>
                     <td>
                         <xsl:if test="commentaire">

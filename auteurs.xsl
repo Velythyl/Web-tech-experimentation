@@ -3,6 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
     version="2.0">
+    <xsl:import href="photo.xsl"/>
     <xsl:output method="xhtml"/>
     
     <xsl:template match="/">
@@ -19,18 +20,14 @@
             </head>
             <body>
                 <h2>Auteurs de la bibliotheque</h2>
-                <xsl:for-each select="bibliotheque/auteurs/auteur">
+                <xsl:for-each select="//auteur">
                     <xsl:sort select="concat(nom, prenom)" order="ascending"/>
                     <h1><xsl:value-of select="concat(nom, ', ', prenom)"/></h1>
                     <p>Pays: <xsl:value-of select="pays"/></p>
                     
-                    <xsl:variable name="pic" select="photo"/>
-                    
-                    <img height="200">
-                        <xsl:attribute name="src">
-                            <xsl:value-of select="photo"/>
-                        </xsl:attribute>
-                    </img>
+                    <xsl:call-template name="photoGetter">
+                        <xsl:with-param name="photo" select="photo"/>
+                    </xsl:call-template>
                     
                     <p>
                         <xsl:if test="commentaire">

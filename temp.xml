@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
-<?xml-stylesheet type="text/xsl" href="auteurs.xsl"?>
+<?xml-stylesheet type="text/xsl" href="livres.xsl"?>
 <bibliotheque>
     <auteurs>
         <auteur ident="a19031">
