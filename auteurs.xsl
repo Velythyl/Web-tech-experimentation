@@ -38,52 +38,59 @@
                         </xsl:if>
                     </p>
                     
-                    <xsl:variable name="ID" select="@ident"/>
+                    <xsl:call-template name="livreGetter">
+                        <xsl:with-param name="ID" select="@ident"/>
+                    </xsl:call-template>
                     
-                    <h3>Livres:</h3>
-                    <table>
-                        <tr>
-                            <th>Prix</th>
-                            <th>Titre</th>
-                            <th>Annee</th>
-                            <th>Couverture</th>
-                            <th>Commentaire</th>
-                        </tr>
-                        
-                        <xsl:for-each select="//livre">
-                            <xsl:sort select="prix" order="ascending"/>
-                            <xsl:if test="contains(@auteurs, $ID)">
-                                <tr>
-                                    <td>
-                                        <xsl:value-of select="prix"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="titre"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="annee"/>
-                                    </td>
-                                    <td>
-                                        <xsl:if test="couverture">
-                                            <xsl:value-of select="couverture"/>
-                                        </xsl:if>
-                                    </td>
-                                    <td>
-                                        <xsl:if test="commentaire">
-                                            <xsl:value-of select="commentaire"/>
-                                        </xsl:if>
-                                    </td>
-                                </tr>
-                            </xsl:if>
-                            
-                        </xsl:for-each>
-                        
-                    </table>
                 </xsl:for-each>
                 
             </body>
         </xhtml>
         
+    </xsl:template>
+    
+    <xsl:template name="livreGetter">
+        <xsl:param name="ID"></xsl:param>
+        
+        <h3>Livres:</h3>
+        <table>
+            <tr>
+                <th>Prix</th>
+                <th>Titre</th>
+                <th>Annee</th>
+                <th>Couverture</th>
+                <th>Commentaire</th>
+            </tr>
+            
+            <xsl:for-each select="//livre">
+                <xsl:sort select="prix" order="ascending"/>
+                <xsl:if test="contains(@auteurs, $ID)">
+                    <tr>
+                        <td>
+                            <xsl:value-of select="prix"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="titre"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="annee"/>
+                        </td>
+                        <td>
+                            <xsl:if test="couverture">
+                                <xsl:value-of select="couverture"/>
+                            </xsl:if>
+                        </td>
+                        <td>
+                            <xsl:if test="commentaire">
+                                <xsl:value-of select="commentaire"/>
+                            </xsl:if>
+                        </td>
+                    </tr>
+                </xsl:if>
+                
+            </xsl:for-each>
+            
+        </table>
     </xsl:template>
     
 </xsl:stylesheet>

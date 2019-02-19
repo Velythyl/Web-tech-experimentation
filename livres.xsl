@@ -42,48 +42,52 @@
                                 Couverture: <xsl:value-of select="couverture"/>
                             </xsl:if></p>
                             
-                            <table>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Prenom</th>
-                                    <th>Pays</th>
-                                    <th>Photo</th>
-                                    <th>Commentaire</th>
-                                </tr>
+                            <xsl:call-template name="auteurGetter">
+                                <xsl:with-param name="autList" select="@auteurs"/>
+                            </xsl:call-template>
                             
-                                <xsl:variable name="auts" select="tokenize(@auteurs, '\s')"/>
-                                <xsl:variable name="autsR" select="//auteur[@ident=$auts]"/>
-                                <xsl:for-each select="$autsR">
-                                    <tr>
-                                        <td>
-                                            <xsl:value-of select="nom"/>
-                                        </td>
-                                        <td>
-                                            <xsl:value-of select="prenom"/>
-                                        </td>
-                                        <td>
-                                            <xsl:value-of select="pays"/>
-                                        </td>
-                                        <td>
-                                            <xsl:value-of select="photo"/>
-                                        </td>
-                                        <td>
-                                            <xsl:if test="commentaire">
-                                                <xsl:value-of select="commentaire"/>
-                                            </xsl:if>
-                                        </td>
-                                    </tr>
-                                </xsl:for-each>
-                                
-                            </table>
                         </xsl:if>
-                        
                     </xsl:for-each>
-                    
                 </xsl:for-each>
             </body>
         </xhtml>
-        
+    </xsl:template>
+    
+    <xsl:template name="auteurGetter">
+        <xsl:param name="autList"/>
+        <table>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Pays</th>
+                <th>Photo</th>
+                <th>Commentaire</th>
+            </tr>
+            
+            <xsl:variable name="auts" select="tokenize(@auteurs, '\s')"/>
+            <xsl:variable name="autsR" select="//auteur[@ident=$auts]"/>
+            <xsl:for-each select="$autsR">
+                <tr>
+                    <td>
+                        <xsl:value-of select="nom"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="prenom"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="pays"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="photo"/>
+                    </td>
+                    <td>
+                        <xsl:if test="commentaire">
+                            <xsl:value-of select="commentaire"/>
+                        </xsl:if>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </table>
     </xsl:template>
     
 </xsl:stylesheet>
