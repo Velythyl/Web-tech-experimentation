@@ -3,105 +3,46 @@
 <?xml-stylesheet type="text/xsl" href="livres.xsl"?>
 <bibliotheque>
     <auteurs>
-        <auteur ident="a19031">
-            <nom>nom31</nom>
-            <prenom>prenom31</prenom>
-            <pays>Pays</pays>
-            <commentaire>Gakhga</commentaire>
-            <photo>URL.png</photo>
+        <auteur ident="Sartre">
+            <nom>Sartre</nom>
+            <prenom>Jean-Paul</prenom>
+            <pays>France</pays>
+            <commentaire>Auteur très réputé de l'existentialisme</commentaire>
+            <photo>https://upload.wikimedia.org/wikipedia/commons/e/ef/Sartre_1967_crop.jpg</photo>
         </auteur>
         
-        <auteur ident="a19032">
-            <prenom>prenom32</prenom>
-            <nom>nom32</nom>
-            <pays>Pays-bla</pays>
-            <commentaire>Test jhahja</commentaire>
-            <photo>URL.svg</photo>
+        <auteur ident="Dijkstra">
+            <prenom>Edsger W.</prenom>
+            <nom>Dijkstra</nom>
+            <pays>Pays-Bas</pays>
+            <commentaire>Important informaticien</commentaire>
+            <photo>https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Edsger_Wybe_Dijkstra.jpg/330px-Edsger_Wybe_Dijkstra.jpg</photo>
         </auteur>
         
-        <auteur ident="a19033">
-            <prenom>prenom</prenom>
-            <nom>nom</nom>
-            <pays>Pays salut</pays>
-            <photo>URL.gif</photo>
+        <auteur ident="Dahl">
+            <prenom>Ole-Johan</prenom>
+            <nom>Dahl</nom>
+            <pays>Norvège</pays>
+            <photo>https://www.mn.uio.no/ifi/english/about/ole-johan-dahl/ole-johan-dahl-turing.jpg</photo>
         </auteur>
         
-        <auteur ident="a19034">
-            <nom>nom</nom>
-            <prenom>prenom</prenom>
-            <pays>Pays pays-test</pays>
-            <photo>vert.jpeg</photo>
-        </auteur>
     </auteurs>
     
     <livres>
-        <livre langue="FR" auteurs="a19031 a19032 a19033 a19034">
-            <titre>Titre</titre>
-            <annee>1997</annee>
-            <prix devise="CAD">0</prix>
-            <couverture>http://www.bla.com</couverture>
-            <commentaire>Test</commentaire>
+        <livre langue="FR" auteurs="Sartre">
+            <titre>Huis clos</titre>
+            <annee>1947</annee>
+            <prix devise="CAD">34</prix>
+            <couverture>https://m.media-amazon.com/images/M/MV5BZWU5OWQxNjQtMjE1Ny00NmY0LTllODQtYmYzOWZmY2Q5Nzk1XkEyXkFqcGdeQXVyMDI3OTIzOA@@._V1_SY1000_CR0,0,723,1000_AL_.jpg</couverture>
+            <commentaire>"L'enfer, c'est les autres"</commentaire>
         </livre>
         
-        <livre langue="FR" auteurs="a19031">
-            <titre>Super titre 24</titre>
-            <annee>2010</annee>
+        <livre langue="FR" auteurs="Dijkstra Dahl">
+            <titre>Structured programming</titre>
+            <annee>1972</annee>
             <prix>100</prix>
-            <couverture>http://www.bla.com</couverture>
-            <commentaire>khbagkhgta</commentaire>
-        </livre>
-        
-        <livre langue="FR" auteurs="a19031 a19032">
-            <titre>Livre a 2$</titre>
-            <annee>1002</annee>
-            <prix>2</prix>
-            <commentaire></commentaire>
-        </livre>
-        
-        <livre langue="FR" auteurs="a19031">
-            <titre>Livre a 20$</titre>
-            <annee>1840</annee>
-            <prix>20</prix>
-            <couverture>http://www.bla.com</couverture>
-        </livre>
-        
-        <livre langue="FR" auteurs="a19038">
-            <titre>Ceci devrait etre en haut, livre a 4$</titre>
-            <annee>2001</annee>
-            <prix devise="USD">4</prix>
+            <couverture>https://images-na.ssl-images-amazon.com/images/I/41i2RHhXfnL._SX343_BO1,204,203,200_.jpg</couverture>
         </livre>
     </livres>
-    
-    <auteurs>
-        <auteur ident="a19035">
-            <nom>nom</nom>
-            <prenom>prenom</prenom>
-            <pays>Pays</pays>
-            <commentaire>Gakhga</commentaire>
-            <photo>temp.jpg</photo>
-        </auteur>
-        
-        <auteur ident="a19036">
-            <prenom>prenom</prenom>
-            <nom>nom</nom>
-            <pays>Pays-bla</pays>
-            <commentaire>Test jhahja</commentaire>
-            <photo>URL.svg</photo>
-        </auteur>
-        
-        <auteur ident="a19037">
-            <prenom>prenom</prenom>
-            <nom>nom</nom>
-            <pays>Pays salut</pays>
-            <photo>URL.gif</photo>
-        </auteur>
-        
-        <auteur ident="a19038">
-            <nom>a</nom>
-            <prenom>a</prenom>
-            <pays>Pays pays-test</pays>
-            <photo>URL.jpg</photo>
-        </auteur>
-    </auteurs>
     
 </bibliotheque>

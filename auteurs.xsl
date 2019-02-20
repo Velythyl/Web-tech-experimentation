@@ -4,6 +4,7 @@
     exclude-result-prefixes="xs"
     version="2.0">
     <xsl:import href="photo.xsl"/>
+    <xsl:import href="couverture.xsl"/>
     <xsl:output method="xhtml"/>
     
     <xsl:template match="/">
@@ -74,7 +75,9 @@
                         </td>
                         <td>
                             <xsl:if test="couverture">
-                                <xsl:value-of select="couverture"/>
+                                <xsl:call-template name="couvGetter">
+                                    <xsl:with-param name="couv" select="couverture"/>
+                                </xsl:call-template>
                             </xsl:if>
                         </td>
                         <td>

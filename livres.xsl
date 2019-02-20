@@ -4,10 +4,11 @@
     exclude-result-prefixes="xs"
     version="2.0">
     <xsl:import href="photo.xsl"/>
+    <xsl:import href="couverture.xsl"/>
     <xsl:output method="xhtml"/>
     
-    <xsl:param name="lowPrice" select="2"></xsl:param>
-    <xsl:param name="highPrice" select="20"></xsl:param>
+    <xsl:param name="lowPrice" select="0"></xsl:param>
+    <xsl:param name="highPrice" select="100"></xsl:param>
     <xsl:param name="mot" select='""'></xsl:param>
     
     <xsl:template match="/">
@@ -41,16 +42,20 @@
         
         <xsl:for-each select="//livre">
             <xsl:sort select="prix"/>
-            <xsl:if test="prix>=$lowPrice and $highPrice>=prix and contains(titre, $mot) and starts-with(@auteurs, $ID)">  <!-- < ne marche pas? -->
+            <xsl:if test="prix>=$lowPrice and $highPrice>=prix and contains(titre, $mot) and starts-with(@auteurs, $ID)">  <!-- "<" ne marche pas? -->
                 <h1><xsl:value-of select="titre"/></h1>
                 <p>Prix: <xsl:value-of select="prix"/></p>
                 <p>Année: <xsl:value-of select="annee"/></p>
+                
+                <xsl:if test="couverture">
+                    <xsl:call-template name="couvGetter">
+                        <xsl:with-param name="couv" select="couverture"/>
+                    </xsl:call-template>
+                </xsl:if>
+                
                 <p><xsl:if test="commentaire">
                     
                     Commentaire: <xsl:value-of select="commentaire"/>
-                </xsl:if></p>
-                <p><xsl:if test="couverture">
-                    Couverture: <xsl:value-of select="couverture"/>
                 </xsl:if></p>
                 
                 <xsl:call-template name="auteurGetter">

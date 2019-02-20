@@ -5,7 +5,7 @@ start = element auteur {
     ((nom, prenom) | (prenom, nom)),
     pays,
     (external "commentaire.rnc")?,
-    element photo {xsd:string { pattern='.+\.(png|jpg|jpeg|gif|png|svg)' }}
+    element photo {xsd:string { pattern='(https?)://[ -~]+\.(png|jpg|jpeg|gif|png|svg)' }}
 }
 
 nom = element nom{Name}
@@ -13,5 +13,5 @@ prenom = element prenom{Name}
 Name = xsd:string{pattern='.+'} # un pattern qui regarde pour une majuscule, etc, ne ferait pas de sens pour les noms internationnaux (comme des caracteres asiatiques, par exemple, ou d'Atruce)
 
 pays = element pays {
-    xsd:string{pattern='[A-Z]([a-z]|\-| )+'}    #comprends les pays ayant des espaces ou -
+    xsd:string{pattern='.(.|\-| )+'}    #comprends les pays ayant des espaces ou -
 }

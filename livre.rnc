@@ -8,7 +8,7 @@ livre = element livre {
     element titre {xsd:string { pattern='.{1,60}'}}, #minumum est 1 car on ne peut avoir de titres vides
     element annee {xsd:gYear},
     prix,
-    element couverture {xsd:string {pattern='(https?)://www\.[a-z0-9]+\.[a-z]{2,5}'}}?,
+    element couverture {xsd:string {pattern='(https?)://[ -~]+\.[a-z]{2,5}'}}?, #pas demande d'avoir une URL de photo
     (external "commentaire.rnc")?
 }
 
