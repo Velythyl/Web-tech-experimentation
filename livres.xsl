@@ -21,7 +21,8 @@
                     td {
                     border-style: solid;
                     border-width: 1px;
-                    }</style>
+                    }
+                </style>
             </head>
             <body>
                 <h2>Livres de la bibliotheque</h2>
@@ -81,6 +82,7 @@
             <xsl:variable name="auts" select="tokenize(@auteurs, '\s')"/>
             <xsl:variable name="autsR" select="//auteur[@ident=$auts]"/>
             <xsl:for-each select="$autsR">
+                <xsl:sort select="concat(nom, prenom)"></xsl:sort>
                 <tr>
                     <td>
                         <xsl:value-of select="nom"/>

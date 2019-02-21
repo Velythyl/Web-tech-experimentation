@@ -26,6 +26,28 @@
             <photo>https://www.mn.uio.no/ifi/english/about/ole-johan-dahl/ole-johan-dahl-turing.jpg</photo>
         </auteur>
         
+        <auteur ident="Kant">
+            <prenom>Emmanuel</prenom>
+            <nom>Kant</nom>
+            <pays>Allemagne</pays>
+            <photo>https://images.ecosia.org/DGJr4MqoVJIzXEvAMRNgtLRA_70=/0x390/smart/http%3A%2F%2Fwww.filosofiaespirita.org%2Fsite%2Fwp-content%2Fuploads%2F2014%2F01%2FFIL-KANT.jpg</photo>
+        </auteur>
+        
+        <auteur ident="Schmitt">
+            <prenom>Eric-Emmanuel</prenom>
+            <nom>Schmitt</nom>
+            <pays>France</pays>
+            <commentaire>Chevalier des Arts et des Lettres et Docteur honoris causa de l'Université de Sherbrooke</commentaire>
+            <photo>https://images.ecosia.org/feH5JzRHdtFEtoHJClvCLUqa8O4=/0x390/smart/http%3A%2F%2Fwww.babelio.com%2Fusers%2FAVT_Eric-Emmanuel-Schmitt_8802.jpeg</photo>
+        </auteur>
+        
+        <auteur ident="Foenkinos">
+            <prenom>David</prenom>
+            <nom>Foenkinos</nom>
+            <pays>France</pays>
+            <photo>https://images.ecosia.org/ReM6ofc4hvXzk9sVHcNi3vzfhNA=/0x390/smart/http%3A%2F%2Fenfinlivre.blog.lemonde.fr%2Ffiles%2F2009%2F08%2FDavid-Foenkinos-2.png</photo>
+        </auteur>
+        
     </auteurs>
     
     <livres>
@@ -42,6 +64,32 @@
             <annee>1972</annee>
             <prix>100</prix>
             <couverture>https://images-na.ssl-images-amazon.com/images/I/41i2RHhXfnL._SX343_BO1,204,203,200_.jpg</couverture>
+        </livre>
+        <livre langue="DE" auteurs="Kant">
+            <titre>Grundlegung zur Metaphysik der Sitten</titre>
+            <annee>1785</annee>
+            <prix>37</prix>
+            <couverture>http://static.zeno.org/books/9781484032169/0000c.jpg</couverture>
+        </livre>
+        <livre langue="FR" auteurs="Schmitt">
+            <titre>Concerto à la mémoire d'un ange</titre>
+            <annee>2010</annee>
+            <prix devise="EUR">18</prix>
+            <couverture>https://images.ecosia.org/ocPi6cZmrvlh7Oq4ozfpQI4EU2A=/0x390/smart/http%3A%2F%2Fimages-chapitre.com%2Fima2%2Foriginal%2F720%2F27669720_15020307.jpg</couverture>
+            <commentaire>Prix Goncourt de la nouvelle 2010</commentaire>
+        </livre>
+        <livre langue="FR" auteurs="Foenkinos">
+            <titre>La délicatesse</titre>
+            <annee>2009</annee>
+            <prix devise="CHF">9</prix>
+            <couverture>https://images.ecosia.org/KIxv0l88J1K9N2SFuCySvbDa-s4=/0x390/smart/http%3A%2F%2Fcache.cosmopolitan.fr%2Fdata%2Fphoto%2Fw1000_c17%2Fdelicatesse.jpg</couverture>
+            <commentaire>Foenkinos a réussi une mission impossible: faire sourire et réfléchir avec un roman sentimental. Ses dialogues, comme les situations, sont savoureux… et délicats.</commentaire>
+        </livre>
+        <livre langue="FR" auteurs="Schmitt">
+            <titre>Odette toulemonde</titre>
+            <annee>2006</annee>
+            <prix>8</prix>
+            <commentaire>Une comédie en demi-teinte, très drôle et très grave...</commentaire>
         </livre>
     </livres>
     
