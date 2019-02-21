@@ -42,7 +42,8 @@
         
         <xsl:for-each select="//livre">
             <xsl:sort select="prix"/>
-            <xsl:if test="prix>=$lowPrice and $highPrice>=prix and contains(titre, $mot) and starts-with(@auteurs, $ID)">  <!-- "<" ne marche pas? -->
+            <!-- le contains(concat(' ',titre,' '), concat(' ',$mot,' ')) permet de s'assurer que le titre contient le mot exact, et non pas qu'un de ses mots contient le mot comme substring -->
+            <xsl:if test="prix>=$lowPrice and $highPrice>=prix and (contains(concat(' ',titre,' '), concat(' ',$mot,' ')) or $mot='') and starts-with(@auteurs, $ID)">
                 <h1><xsl:value-of select="titre"/></h1>
                 <p>Prix: <xsl:value-of select="prix"/></p>
                 <p>Année: <xsl:value-of select="annee"/></p>

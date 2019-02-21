@@ -7,6 +7,8 @@
     <xsl:import href="couverture.xsl"/>
     <xsl:output method="xhtml"/>
     
+    <xsl:param name="nomSearch" select="''"/>
+    
     <xsl:template match="/">
         <xhtml>
             <head>
@@ -23,22 +25,27 @@
                 <h2>Auteurs de la bibliotheque</h2>
                 <xsl:for-each select="//auteur">
                     <xsl:sort select="concat(nom, prenom)" order="ascending"/>
-                    <h1><xsl:value-of select="concat(nom, ', ', prenom)"/></h1>
-                    <p>Pays: <xsl:value-of select="pays"/></p>
                     
-                    <xsl:call-template name="photoGetter">
-                        <xsl:with-param name="photo" select="photo"/>
-                    </xsl:call-template>
+                    <xsl:if test="$nomSearch = nom or $nomSearch = ''">
+                        <h1><xsl:value-of select="concat(nom, ', ', prenom)"/></h1>
+                        <p>Pays: <xsl:value-of select="pays"/></p>
+                        
+                        <xsl:call-template name="photoGetter">
+                            <xsl:with-param name="photo" select="photo"/>
+                        </xsl:call-template>
+                        
+                        <p>
+                            <xsl:if test="commentaire">
+                                Commentaire: <xsl:value-of select="commentaire"/>
+                            </xsl:if>
+                        </p>
+                        
+                        <xsl:call-template name="livreGetter">
+                            <xsl:with-param name="ID" select="@ident"/>
+                        </xsl:call-template>
+                    </xsl:if>
                     
-                    <p>
-                        <xsl:if test="commentaire">
-                            Commentaire: <xsl:value-of select="commentaire"/>
-                        </xsl:if>
-                    </p>
                     
-                    <xsl:call-template name="livreGetter">
-                        <xsl:with-param name="ID" select="@ident"/>
-                    </xsl:call-template>
                     
                 </xsl:for-each>
                 
