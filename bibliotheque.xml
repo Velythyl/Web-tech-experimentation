@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="rnc.rnc" type="application/relax-ng-compact-syntax"?>
-<?xml-stylesheet type="text/xsl" href="livres.xsl"?>
+<?xml-stylesheet type="text/xsl" href="auteurs.xsl"?>
 <bibliotheque>
     <auteurs>
         <auteur ident="Sartre">
@@ -68,13 +68,13 @@
         <livre langue="DE" auteurs="Kant">
             <titre>Grundlegung zur Metaphysik der Sitten</titre>
             <annee>1785</annee>
-            <prix>37</prix>
+            <prix devise="YEN">37</prix>
             <couverture>http://static.zeno.org/books/9781484032169/0000c.jpg</couverture>
         </livre>
         <livre langue="FR" auteurs="Schmitt">
             <titre>Concerto à la mémoire d'un ange</titre>
             <annee>2010</annee>
-            <prix devise="EUR">18</prix>
+            <prix devise="DKK">18</prix>
             <couverture>https://images.ecosia.org/ocPi6cZmrvlh7Oq4ozfpQI4EU2A=/0x390/smart/http%3A%2F%2Fimages-chapitre.com%2Fima2%2Foriginal%2F720%2F27669720_15020307.jpg</couverture>
             <commentaire>Prix Goncourt de la nouvelle 2010</commentaire>
         </livre>
@@ -88,7 +88,8 @@
         <livre langue="FR" auteurs="Schmitt">
             <titre>Odette toulemonde</titre>
             <annee>2006</annee>
-            <prix>8</prix>
+            <prix devise="AUD">8.90</prix>
+            <couverture>https://images.ecosia.org/xbOkC1dfzuFbVhO5KkayIj80lUQ=/0x390/smart/https%3A%2F%2Fmedia.senscritique.com%2Fmedia%2F000000156455%2Fsource_big%2FOdette_Toulemonde.jpg</couverture>
             <commentaire>Une comédie en demi-teinte, très drôle et très grave...</commentaire>
         </livre>
     </livres>
