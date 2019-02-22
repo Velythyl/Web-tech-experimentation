@@ -16,13 +16,7 @@
             <head>
                 <title>Ma bibliothèque</title>
                 <style type="text/css">
-                    th {  background-color: silver;  }                     
-                    .ligne {background-color: #FFCCCC; }
-                    td {
-                    border-style: solid;
-                    border-width: 1px;
-                    }
-                </style>
+                    th {  background-color: silver;  }</style>
             </head>
             <body>
                 <h2>Livres de la bibliotheque</h2>
