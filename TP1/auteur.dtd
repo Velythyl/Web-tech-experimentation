@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT auteur (nom, prenom, pays, photo) >
+<!ELEMENT nom (#PCDATA) >
+<!ELEMENT prenom (#PCDATA) >
+<!ELEMENT pays (#PCDATA) >
+<!ELEMENT photo (#PCDATA) >
