@@ -12,6 +12,7 @@ $(document).ready(function() {
 });
 
 $(document).keyup(function(e) {
+
     switch(e.which) {
         case 65:    //a
         case 37:    //left
@@ -40,7 +41,6 @@ $(document).keyup(function(e) {
 
     grid.genRand();
     update();
-
     //TODO tester grid.won et grid.lost, faire trucs appropries
 });
 
@@ -77,6 +77,8 @@ function newGame(x, y) {
     };
 
     grid.move = function(dir) {
+        this.animArrX = [];
+        this.animArrY = [];
         this.nb++;
 
         switch (dir) {
@@ -143,7 +145,7 @@ function newGame(x, y) {
                     }
                 }
                 break;
-            case 4: //down
+            case 4: //up
                 for(let i=0; i<this.x; i++) {
                     for(let j=1; j<this.y; j++) {
 
@@ -165,6 +167,7 @@ function newGame(x, y) {
                 }
                 break;
         }
+
     };
 
     grid.genRand();
@@ -173,8 +176,6 @@ function newGame(x, y) {
     update();
     setCSS();
 }
-
-
 
 function newTile() {
     let obj = {};
@@ -219,13 +220,13 @@ function update() {
     for(let i=0; i<grid.x; i++) {
         inside += '<div class="col">';
         for(let j=0; j<grid.y; j++) {
-            inside += '<div class="row tile'+i+' '+j+'"><div class="v';
+            inside += '<div class="row tile" id="x'+i+'y'+j+'"><div class="v';
 
             let val = grid.grid[i][j].value;
             if(val !== null) inside += ' v'+val+'">' + val;
             else {
                 safe = true;
-                inside += '">'+i+", "+j;
+                inside += '">x';
             }
 
             inside += '</div></div>';
