@@ -84,13 +84,10 @@ body {
     text-align: center;
 }
 
-.col {
-    width: 100%;
-    height: 100%;
-}
-
 /* TODO: faire les classes v2, v4, ..., v2048 qui definissent les couleurs des trucs
     TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc)
     TODO: faire le vrai background de #game, probablement white
     TODO: faire centrer verticalement et horizontalement le #grid en utilisant la meme methode que .v
+
+    ne pas mettre de regles pour .col et .row!!
  */

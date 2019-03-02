@@ -11,8 +11,45 @@ $(document).ready(function() {
     });
 });
 
+$(document).keyup(function(e) {
+    switch(e.which) {
+        case 65:    //a
+        case 37:    //left
+            grid.move(1);
+            break;
+
+        case 87:    //w
+        case 38:    // up
+            grid.move(4);
+            break;
+
+        case 68:
+        case 39: // right
+            grid.move(0);
+            break;
+
+        case 83:    //s
+        case 40:    // down
+            grid.move(3);
+            break;
+
+        default:
+            return;
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+
+    grid.genRand();
+    update();
+
+    //TODO tester grid.won et grid.lost, faire trucs appropries
+});
+
 function newGame(x, y) {
     grid = {};
+
+    grid.nb = 0;
+    grid.lost = false;
+    grid.won = false;
 
     grid.x = x;
     grid.y = y;
@@ -28,40 +65,105 @@ function newGame(x, y) {
     }
 
     grid.genRand = function() {
-        let cell = newTile();
-        cell.value = 1;
-        while(cell.value !== null) {
-            const x = rand(this.x);
-            const y = rand(this.y);
-            cell = this.grid[x][y];
+        var nullCells = [];
+
+        for(let i=0; i<x; i++) {
+            for(let j=0; j<y; j++) {
+                if(this.grid[i][j].value === null) nullCells.push(this.grid[i][j]);
+            }
         }
 
-        cell.value = (rand(1)+1)*2;
+        nullCells[rand(nullCells.length)].value = (rand(2)+1)*2;
     };
 
     grid.move = function(dir) {
+        this.nb++;
 
         switch (dir) {
-            case -1: //right
+            case 0: //right
                 for(let j=0; j<this.y; j++) {
-                    for(let i=this.x-1; i>=0; i--) {
+                    for(let i=this.x-2; i>=0; i--) {
 
-                        let cell = this.grid[i][j];
-                        let nextCell = this.grid[i+1][j];
+                        let x = i;
+                        let y = j;
+                        let cond = true;
 
-                        while(cell.moveInto(nextCell));
+                        while(cond) {
+                            let cell = this.grid[x][y];
+                            let nextCell = this.grid[x+1][y];
+
+                            cond = cell.moveInto(nextCell);
+
+                            x++;
+
+                            if(x+1>=this.x) break;
+                        }
                     }
                 }
+                break;
             case 1: //left
                 for(let j=0; j<this.y; j++) {
                     for(let i=1; i<this.x; i++) {
 
-                        let cell = this.grid[i][j];
-                        let nextCell = this.grid[i-1][j];
+                        let x = i;
+                        let y = j;
+                        let cond = true;
 
-                        while(cell.moveInto(nextCell));
+                        while(cond) {
+                            let cell = this.grid[x][y];
+                            let nextCell = this.grid[x-1][y];
+
+                            cond = cell.moveInto(nextCell);
+
+                            x--;
+
+                            if(x-1<0) break;
+                        }
                     }
                 }
+                break;
+            case 3: //down
+                for(let i=0; i<this.x; i++) {
+                    for(let j=this.y-2; j>=0; j--) {
+
+                        let x = i;
+                        let y = j;
+                        let cond = true;
+
+                        while(cond) {
+                            let cell = this.grid[x][y];
+                            let nextCell = this.grid[x][y+1];
+
+                            cond = cell.moveInto(nextCell);
+
+                            y++;
+
+                            if(y+1>=this.y) break;
+                        }
+                    }
+                }
+                break;
+            case 4: //down
+                for(let i=0; i<this.x; i++) {
+                    for(let j=1; j<this.y; j++) {
+
+                        let x = i;
+                        let y = j;
+                        let cond = true;
+
+                        while(cond) {
+                            let cell = this.grid[x][y];
+                            let nextCell = this.grid[x][y-1];
+
+                            cond = cell.moveInto(nextCell);
+
+                            y--;
+
+                            if(y-1<0) break;
+                        }
+                    }
+                }
+                break;
         }
     };
 
@@ -69,7 +171,6 @@ function newGame(x, y) {
     grid.genRand();
 
     update();
-
     setCSS();
 }
 
@@ -78,14 +179,17 @@ function newGame(x, y) {
 function newTile() {
     let obj = {};
 
-    obj.value = null;  //nb qui est 0 ou 1 +1 : 1 ou 2 * 2: 2 ou 4
+    obj.value = null;
     obj.moveInto = function (tile) {
+        if(this.value === null) return false;
+
         if(this.value === tile.value) {
             this.value = null;
             tile.value = tile.value*2;
+            if(tile.value === 2048) grid.won = true;
         } else if(tile.value === null) {
             tile.value = this.value;
-            tile.value = null;
+            this.value = null;
             return true;
         }
 
@@ -99,13 +203,18 @@ function rand(max) {
     return Math.floor(Math.random() * max);
 }
 
-function setCSS() {
-    $(".row").css({"width": "100%", "height": "calc( 100% / "+grid.y+")"});
-    $(".col").css({"width": "calc( 100% / "+grid.x+")", "display": "inline-block"});
+function setCSS() { //set le css une seule fois pour toute la partie
+    let sheet = document.styleSheets[0];
+
+    sheet.insertRule(".row { width: 100%; height: calc( 100% / "+grid.y+"); }");
+    sheet.insertRule(".col { width: calc( 100% / "+grid.x+"); height: 100%; display: inline-block }");
 }
 
 function update() {
+    $("#counter").text(""+grid.nb);
+
     let inside = "";
+    let safe = false;
 
     for(let i=0; i<grid.x; i++) {
         inside += '<div class="col">';
@@ -114,7 +223,10 @@ function update() {
 
             let val = grid.grid[i][j].value;
             if(val !== null) inside += ' v'+val+'">' + val;
-            else inside += '">'+i+", "+j;
+            else {
+                safe = true;
+                inside += '">'+i+", "+j;
+            }
 
             inside += '</div></div>';
         }
@@ -122,4 +234,6 @@ function update() {
     }
 
     gridDiv.html(inside);
+
+    if(!safe) grid.lost = true;
 }
