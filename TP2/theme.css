@@ -91,6 +91,17 @@ body {
     text-align: center;
 }
 
+.empty-tile {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    color: transparent;
+}
+
 /* TODO: faire les classes v2, v4, ..., v2048 qui definissent les couleurs des trucs
     TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc)
     TODO: faire le vrai background de #game, probablement white
