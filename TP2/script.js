@@ -222,7 +222,10 @@ function update() {
         for(let j=0; j<grid.y; j++) {
             let val = grid.grid[i][j].value;
 
-            if(val !== null) inside += '<div class="row tile v'+val+'" id="x'+i+'y'+j+'"><div class="v">' + val + '</div></div>';
+            if(val !== null) {
+                safe = true;
+                inside += '<div class="row tile v'+val+'" id="x'+i+'y'+j+'"><div class="v">' + val + '</div></div>';
+            }
             else inside += '<div class="row tile" id="x'+i+'y'+j+'"><div class="empty-tile v">x</div></div>';
         }
         inside += '</div>'
