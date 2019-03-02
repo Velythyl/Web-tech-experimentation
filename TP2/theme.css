@@ -54,7 +54,7 @@ button:hover {
     height: 100%;
     width: 100%;
     position: fixed;
-    background-color: white;
+    background-color: #FFFCE7;
     z-index: 2;
 }
 
@@ -72,7 +72,7 @@ body {
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: red;
+    background-color: #FFFCE7;
     z-index: 1;
 }
 
@@ -91,6 +91,7 @@ body {
     text-align: center;
 }
 
+/*https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting*/
 .empty-tile {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -102,8 +103,51 @@ body {
     color: transparent;
 }
 
-/* TODO: faire les classes v2, v4, ..., v2048 qui definissent les couleurs des trucs
-    TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc)
+.v2 {
+    background-color: #448AFF;
+}
+
+.v4 {
+    background-color: #0288D1;
+}
+
+.v8 {
+    background-color: #0097A7;
+}
+
+.v16 {
+    background-color: #689F38;
+}
+
+.v32 {
+    background-color: #8BC34A;
+}
+
+.v64 {
+    background-color: #CDDC39;
+}
+
+.v128 {
+    background-color: #FFEB3B;
+}
+
+.v256 {
+    background-color: #ffd605;
+}
+
+.v512{
+    background-color: #e69715;
+}
+
+.v1024{
+    background-color: #FF5252;
+}
+
+.v2048{
+    background-color: #D32F2F;
+}
+/*
+    TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc) !
     TODO: faire le vrai background de #game, probablement white
     TODO: faire centrer verticalement et horizontalement le #grid en utilisant la meme methode que .v
 
