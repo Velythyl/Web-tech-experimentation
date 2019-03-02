@@ -1,6 +1,6 @@
-.col {
+.init-col {
     display: inline-block;
-    width: calc(100% / 4);
+    width: calc(100% / 3);
     
     padding: 1em;
     margin-top: 2em;
@@ -12,9 +12,8 @@
     border: thin solid #FFC107;
 }
 
-.center-col {
-    margin-left: calc(100% / 24);
-    margin-right: calc(100% / 24);
+.right-col {
+    margin-left: calc(100% / 8);
 }
 
 input {
@@ -56,8 +55,42 @@ button:hover {
     width: 100%;
     position: fixed;
     background-color: white;
+    z-index: 2;
 }
 
 body {
     margin: 0;
 }
+
+#grid {
+    width: 90%;
+    height: 90%;
+    background-color: #607D8B;
+}
+
+#game {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: red;
+    z-index: 0;
+}
+
+.v {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.col {
+    width: 100%;
+    height: 100%;
+}
+
+/* TODO: faire les classes v2, v4, ..., v2048 qui definissent les couleurs des trucs
+    TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc)
+    TODO: faire le vrai background de #game, probablement white
+    TODO: faire centrer verticalement et horizontalement le #grid en utilisant la meme methode que .v
+ */
