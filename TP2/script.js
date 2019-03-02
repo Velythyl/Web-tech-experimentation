@@ -220,16 +220,11 @@ function update() {
     for(let i=0; i<grid.x; i++) {
         inside += '<div class="col">';
         for(let j=0; j<grid.y; j++) {
-            inside += '<div class="row tile" id="x'+i+'y'+j+'"><div class="v';
-
             let val = grid.grid[i][j].value;
-            if(val !== null) inside += ' v'+val+'">' + val;
-            else {
-                safe = true;
-                inside += '">x';
-            }
 
-            inside += '</div></div>';
+            if(val !== null) inside += '<div class="row tile v'+val+'" id="x'+i+'y'+j+'"><div class="v">' + val + '</div></div>';
+            else inside += '<div class="row tile" id="x'+i+'y'+j+'"></div>'
+
         }
         inside += '</div>'
     }
