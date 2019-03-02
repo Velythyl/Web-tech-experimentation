@@ -73,6 +73,13 @@ body {
     height: 100%;
     width: 100%;
     background-color: red;
+    z-index: 1;
+}
+
+#game-end {
+    position: fixed;
+    height: 100%;
+    width: 100%;
     z-index: 0;
 }
 
