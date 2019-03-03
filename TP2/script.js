@@ -2,13 +2,36 @@ var grid;
 var gridDiv;
 
 $(document).ready(function() {
+    $("#alert").hide();
+
     gridDiv = $("#grid");
 
     $("#init-button").click(function() {
-        newGame(parseInt($("#x-input").val()), parseInt($("#y-input").val()));
+        let xStr = $("#x-input").val();
+        let yStr = $("#y-input").val();
+
+        let x = parseInt(xStr);
+        let y = parseInt(yStr);
+
+        if(xStr === "" || yStr === "" || x < 2 || y < 2) {
+            $("#alert").show();
+            return;
+        }
+
+        newGame(x, y);
 
         $("#init-wrapper").hide();
+
+        // reset divs
+        $("#game").show();
+        $("#lost").show();
+        $("#won").show();
+        $("#alert").hide();
     });
+
+    $("#return-button").click(function () {
+        $("#init-wrapper").show();
+    })
 });
 
 $(document).keyup(function(e) {
@@ -41,6 +64,13 @@ $(document).keyup(function(e) {
 
     grid.genRand();
     update();
+
+    if(grid.won || grid.lost) {
+        $("#game").hide();
+
+        if(grid.lost) $("#won").hide();
+        if(grid.won) $("#lost").hide();
+    }
     //TODO tester grid.won et grid.lost, faire trucs appropries
 });
 
@@ -77,8 +107,6 @@ function newGame(x, y) {
     };
 
     grid.move = function(dir) {
-        this.animArrX = [];
-        this.animArrY = [];
         this.nb++;
 
         switch (dir) {
@@ -207,31 +235,45 @@ function rand(max) {
 function setCSS() { //set le css une seule fois pour toute la partie
     let sheet = document.styleSheets[0];
 
-    sheet.insertRule(".row { width: 100%; height: calc( 100% / "+grid.y+"); }");
-    sheet.insertRule(".col { width: calc( 100% / "+grid.x+"); height: 100%; display: inline-block }");
+    sheet.insertRule("#grid { grid-template-rows: repeat("+grid.y+", auto); }")
 }
 
 function update() {
-    $("#counter").text(""+grid.nb);
+    $(".counter").text(""+grid.nb);
 
     let inside = "";
-    let safe = false;
+    let unsafe = true;
 
     for(let i=0; i<grid.x; i++) {
-        inside += '<div class="col">';
         for(let j=0; j<grid.y; j++) {
             let val = grid.grid[i][j].value;
 
-            if(val !== null) {
-                safe = true;
-                inside += '<div class="row tile v'+val+'" id="x'+i+'y'+j+'"><div class="v">' + val + '</div></div>';
+            try {
+                const up = grid.grid[i][j-1].value;
+                if(up === val) unsafe = false;
+            } catch (ignored) {}
+            try {
+                const down = grid.grid[i][j+1].value;
+                if(down === val) unsafe = false;
+            } catch (ignored) {}
+            try {
+                const left = grid.grid[i-1][j].value;
+                if(left === val) unsafe = false;
+            } catch (ignored) {
+                const right = grid.grid[i+1][j].value;
+                if(right === val) unsafe = false;
             }
-            else inside += '<div class="row tile" id="x'+i+'y'+j+'"><div class="empty-tile v">x</div></div>';
+
+            if(val !== null) inside += '<div class="tile v'+val+'" id="x'+i+'y'+j+'"><div class="v">' + val + '</div></div>';
+            else {
+                unsafe = false;
+                inside += '<div class="tile" id="x'+i+'y'+j+'"><div class="empty-tile v">x</div></div>';
+            }
+
         }
-        inside += '</div>'
     }
 
     gridDiv.html(inside);
 
-    if(!safe) grid.lost = true;
+    if(unsafe) grid.lost = true;
 }

@@ -8,13 +8,14 @@
     </head>
     <body>
         <div id="init-wrapper">
-            <div id="init-div">
+            <div id="alert">Vous devez avoir au moins 2 lignes et colonnes!</div>
+            <div class="pretty-div">
                 <div>
-                    <div class="init-col accent">
+                    <div class="col accent">
                         <div>Nombre de lignes (x)</div>
                         <input id="x-input" type="number"/>
                     </div>
-                    <div class="init-col right-col accent">
+                    <div class="col right-col accent">
                         <div>Nombre de colonnes (y)</div>
                         <input id="y-input" type="number"/>
                     </div>
@@ -23,13 +24,17 @@
             </div>
         </div>
         <div id="game">
-            <div id="counter"></div>
+            <div class="counter" id="counter"></div>
             <div id="grid">
 
             </div>
         </div>
         <div id="game-end">
-
+            <div class="pretty-div">
+                <div class="accent mess" id="lost">Vous avez perdu en <span class="counter"></span> coups!</div>
+                <div class="accent mess" id="won">Vous avez gagné en <span class="counter"></span> coups!</div>
+                <button class="accent" id="return-button" type="button">Retourner au menu</button>
+            </div>
         </div>
     </body>
 </html>
