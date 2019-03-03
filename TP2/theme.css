@@ -1,7 +1,7 @@
 .col {
     display: inline-block;
     width: calc(100% / 3);
-    
+
     padding: 1em;
     margin-top: 2em;
 }
@@ -48,11 +48,11 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+
     background-color: #607D8B;
     border-radius: 1em;
     border: thin solid #607D8B;
-    
+
     width: 90%;
 }
 
@@ -79,7 +79,7 @@ body {
 
     display: grid;
     grid-auto-flow: column;
-    grid-gap: 0.25em;   /* todo: à modifier si tu veux changer l'espace entre les tiles :)     si modifier, me le dire! certains trucs dependent de cette valeur mais c'est facile a changer */
+    grid-gap: 4px;   /* todo: à modifier si tu veux changer l'espace entre les tiles :)     si modifier, me le dire! certains trucs dependent de cette valeur mais c'est facile a changer */
 }
 
 #game {
@@ -122,11 +122,17 @@ body {
     margin-top: 2em;
 }
 
+/* https://stackoverflow.com/questions/7988962/continuous-css-rotation-animation-on-hover-animated-back-to-0deg-on-hover-out */
+@keyframes rotate { /*TODO changer l'animation pour un shake? */
+    0% {transform: rotate(0deg); }
+    50% {}    /* TODO mettre couleur intermediaire?? */
+    100% {transform: rotate(360deg); }
+}
+
 /*https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting*/
 .empty-tile {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently

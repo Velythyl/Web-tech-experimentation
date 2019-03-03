@@ -7,32 +7,36 @@ $(document).ready(function() {
     gridDiv = $("#grid");
 
     $("#init-button").click(function() {
-        let xStr = $("#x-input").val();
-        let yStr = $("#y-input").val();
-
-        let x = parseInt(xStr);
-        let y = parseInt(yStr);
-
-        if(xStr === "" || yStr === "" || x < 2 || y < 2) {
-            $("#alert").show();
-            return;
-        }
-
-        newGame(x, y);
-
-        $("#init-wrapper").hide();
-
-        // reset divs
-        $("#game").show();
-        $("#lost").show();
-        $("#won").show();
-        $("#alert").hide();
+       initGame();
     });
 
     $("#return-button").click(function () {
         $("#init-wrapper").show();
     })
 });
+
+function initGame() {
+    let xStr = $("#x-input").val();
+    let yStr = $("#y-input").val();
+
+    let x = parseInt(xStr);
+    let y = parseInt(yStr);
+
+    if(xStr === "" || yStr === "" || x < 2 || y < 2) {
+        $("#alert").show();
+        return;
+    }
+
+    newGame(x, y);
+
+    $("#init-wrapper").hide();
+
+    // reset divs
+    $("#game").show();
+    $("#lost").show();
+    $("#won").show();
+    $("#alert").hide();
+}
 
 $(document).keyup(function(e) {
 
@@ -43,61 +47,70 @@ $(document).keyup(function(e) {
             break;
 
         case 87:    //w
-        case 38:    // up
-            grid.move(4);
+        case 38:    //up
+            grid.move(2);
             break;
 
-        case 68:
-        case 39: // right
-            grid.move(0);
+        case 68:    //d
+        case 39:    //right
+            grid.move(-1);
             break;
 
         case 83:    //s
-        case 40:    // down
-            grid.move(3);
+        case 40:    //down
+            grid.move(-2);
             break;
+
+        case 13:
+            if($("#init-wrapper").is(":visible")) initGame();
+            return;
 
         default:
             return;
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 
-    displayTurn();
-
-    if(grid.won || grid.lost) {
-        $("#game").hide();
-
-        if(grid.lost) $("#won").hide();
-        if(grid.won) $("#lost").hide();
-    }
-    //TODO tester grid.won et grid.lost, faire trucs appropries
+    playTurn();
 });
 
-function displayTurn() {
+function playTurn() {
     const duration = 300;
     const gridGap = "0.25em";
 
-    for(let key in grid.animDict) {
-        let x = parseInt(key.substring(key.indexOf("x") + 1, key.indexOf("y")));
-        let y = parseInt(key.split("y")[1]);
+    if(grid.x * grid.y < 36) {  // animations deviennent lourdes a peu pres a partir de 36 tuiles
+        for(let key in grid.animDict) {
+            let x = parseInt(key.substring(key.indexOf("x") + 1, key.indexOf("y")));
+            let y = parseInt(key.split("y")[1]);
 
-        x = (grid.animDict[key][0]-x);
-        y = (grid.animDict[key][1]-y);
+            x = (grid.animDict[key][0]-x);
+            y = (grid.animDict[key][1]-y);
 
-        const gridGapX = " + "+gridGap+" * " + x + " ";
-        const gridGapY = " + "+gridGap+" * " + y + " ";
+            const gridGapX = " + "+gridGap+" * " + x + " ";
+            const gridGapY = " + "+gridGap+" * " + y + " ";
 
-        $("#"+key).css({"transition": "transform "+duration+"ms", "transform": ("translate( calc( 100% * " + x + gridGapX + ") , calc( 100% * " + y + gridGapY + ") )") });
+            $("#"+key).css({"transition": "transform "+duration+"ms", "transform": ("translate( calc( 100% * " + x + gridGapX + ") , calc( 100% * " + y + gridGapY + ") )") });
+        }
     }
 
-    const xyv = grid.genRand();
-    const tile = $("#x"+xyv[0]+"y"+xyv[1]);
-    tile.addClass("v"+xyv[2]);
-    tile.css({ "transition": "transform "+duration+"ms", "transform": "rotate(360deg)" });
-
     setTimeout(function(){
+        const xyv = grid.genRand();
         update();
-    }, duration*2);
+
+        const newTile = $("#x"+xyv[0]+"y"+xyv[1]);
+        newTile.css({"animation-name": "rotate", "animation-duration": ""+duration+"ms", "animation-iteration-count": "infinite", "animation-timing-function": "linear"});
+        //{ "transition": ""+duration+"ms", "transform": "rotate(360deg)" } ne fonctionne pas car on est a l'interieur d'un setTimeout
+
+        setTimeout(function () {
+            newTile.removeAttr('style');    //https://stackoverflow.com/questions/1229688/how-can-i-erase-all-inline-styles-with-javascript-and-leave-only-the-styles-spec
+        }, duration);
+
+        if(grid.won || grid.lost) {
+            $("#game").hide();
+
+            if(grid.lost) $("#won").hide();
+            if(grid.won) $("#lost").hide();
+        }
+    }, duration);
 }
 
 function newGame(x, y) {
@@ -112,9 +125,9 @@ function newGame(x, y) {
     grid.grid = [];
 
     for(let i=0; i<x; i++) {
-        let tempArr = [];
+        var tempArr = [];
         for(let j=0; j<y; j++) {
-            tempArr.push(newTile());
+            tempArr.push(newTile(i, j));
         }
 
         grid.grid.push(tempArr);
@@ -137,104 +150,59 @@ function newGame(x, y) {
     grid.move = function(dir) {
         this.nb++;
         this.animDict = {};
-        //if(cond) this.animDict[i][j] = [x, y+1];
-        //let corrI = (dir === -1 ? this.x-1-i : i);
 
         switch (dir) {
-            case 0: //right
-                for(let j=0; j<this.y; j++) {
-                    for(let i=this.x-2; i>=0; i--) {
-
-                        let x = i;
-                        let y = j;
-                        let cond = 2;
-
-                        while(cond === 2) {
-                            let cell = this.grid[x][y];
-                            let nextCell = this.grid[x+1][y];
-
-                            cond = cell.moveInto(nextCell);
-
-                            x++;
-
-                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
-
-                            if(x+1>=this.x) break;
-                        }
-                    }
-                }
-                break;
+            case -1:
             case 1: //left
                 for(let j=0; j<this.y; j++) {
-                    for(let i=1; i<this.x; i++) {
+                    for(let falseI=1; falseI<this.x; falseI++) {
+
+                        let i = (dir === 1? falseI : this.x-1-falseI);
 
                         let x = i;
                         let y = j;
-                        let cond = 2;
+                        let cond = true;
 
-                        while(cond === 2) {
+                        while(cond ) {
                             let cell = this.grid[x][y];
-                            let nextCell = this.grid[x-1][y];
+                            let nextCell = this.grid[x-dir][y];
 
-                            cond = cell.moveInto(nextCell);
+                            cond = cell.moveInto(nextCell, i, j);
 
-                            x--;
+                            x -= dir;
 
-                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
-
-                            if(x-1<0) break;
+                            if(x-dir<0 || x-dir >= this.x) break;
                         }
                     }
                 }
                 break;
-            case 3: //down
+            case -2: //down
+            case 2: //up
+                dir /= 2;
+
                 for(let i=0; i<this.x; i++) {
-                    for(let j=this.y-2; j>=0; j--) {
+                    for(let falseJ=1; falseJ<this.y; falseJ++) {
+
+                        let j = (dir === 1? falseJ : this.y-1-falseJ);
 
                         let x = i;
                         let y = j;
-                        let cond = 2;
+                        let cond = true;
 
-                        while(cond === 2) {
+                        while(cond) {
                             let cell = this.grid[x][y];
-                            let nextCell = this.grid[x][y+1];
+                            let nextCell = this.grid[x][y-dir];
 
-                            cond = cell.moveInto(nextCell);
+                            cond = cell.moveInto(nextCell, i, j);
 
-                            y++;
+                            y -= dir;
 
-                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
-
-                            if(y+1>=this.y) break;
-                        }
-                    }
-                }
-                break;
-            case 4: //up
-                for(let i=0; i<this.x; i++) {
-                    for(let j=1; j<this.y; j++) {
-
-                        let x = i;
-                        let y = j;
-                        let cond = 2;
-
-                        while(cond === 2) {
-                            let cell = this.grid[x][y];
-                            let nextCell = this.grid[x][y-1];
-
-                            cond = cell.moveInto(nextCell);
-
-                            y--;
-
-                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
-
-                            if(y-1<0) break;
+                            if(y-dir<0 || y-dir>=this.y) break;
                         }
                     }
                 }
                 break;
         }
-
     };
 
     grid.genRand();
@@ -244,25 +212,34 @@ function newGame(x, y) {
     setCSS();
 }
 
-function newTile() {
+function newTile(x, y) {
     let obj = {};
 
     obj.value = null;
-    obj.moveInto = function (tile) {
+    obj.x = x;
+    obj.y = y;
+
+    obj.moveInto = function (tile, i, j) {
         if(this.value === null) return 0;
 
         if(this.value === tile.value) {
             this.value = null;
             tile.value = tile.value*2;
             if(tile.value === 2048) grid.won = true;
-            return 1;
+
+            grid.animDict["x"+i+"y"+j] = [tile.x, tile.y];
+
+            return false;
         } else if(tile.value === null) {
             tile.value = this.value;
             this.value = null;
-            return 2;
+
+            grid.animDict["x"+i+"y"+j] = [tile.x, tile.y];
+
+            return true;
         }
 
-        return 0;
+        return false;
     };
 
     return obj;
