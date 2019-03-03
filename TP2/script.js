@@ -62,8 +62,7 @@ $(document).keyup(function(e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 
-    grid.genRand();
-    update();
+    displayTurn();
 
     if(grid.won || grid.lost) {
         $("#game").hide();
@@ -73,6 +72,33 @@ $(document).keyup(function(e) {
     }
     //TODO tester grid.won et grid.lost, faire trucs appropries
 });
+
+function displayTurn() {
+    const duration = 300;
+    const gridGap = "0.25em";
+
+    for(let key in grid.animDict) {
+        let x = parseInt(key.substring(key.indexOf("x") + 1, key.indexOf("y")));
+        let y = parseInt(key.split("y")[1]);
+
+        x = (grid.animDict[key][0]-x);
+        y = (grid.animDict[key][1]-y);
+
+        const gridGapX = " + "+gridGap+" * " + x + " ";
+        const gridGapY = " + "+gridGap+" * " + y + " ";
+
+        $("#"+key).css({"transition": "transform "+duration+"ms", "transform": ("translate( calc( 100% * " + x + gridGapX + ") , calc( 100% * " + y + gridGapY + ") )") });
+    }
+
+    const xyv = grid.genRand();
+    const tile = $("#x"+xyv[0]+"y"+xyv[1]);
+    tile.addClass("v"+xyv[2]);
+    tile.css({ "transition": "transform "+duration+"ms", "transform": "rotate(360deg)" });
+
+    setTimeout(function(){
+        update();
+    }, duration*2);
+}
 
 function newGame(x, y) {
     grid = {};
@@ -86,7 +112,7 @@ function newGame(x, y) {
     grid.grid = [];
 
     for(let i=0; i<x; i++) {
-        var tempArr = [];
+        let tempArr = [];
         for(let j=0; j<y; j++) {
             tempArr.push(newTile());
         }
@@ -99,15 +125,20 @@ function newGame(x, y) {
 
         for(let i=0; i<x; i++) {
             for(let j=0; j<y; j++) {
-                if(this.grid[i][j].value === null) nullCells.push(this.grid[i][j]);
+                if(this.grid[i][j].value === null) nullCells.push([this.grid[i][j], i, j]);
             }
         }
 
-        nullCells[rand(nullCells.length)].value = (rand(2)+1)*2;
+        const choice = nullCells[rand(nullCells.length)];
+        choice[0].value = (rand(2)+1)*2;
+        return [choice[1], choice[2], choice[0].value];
     };
 
     grid.move = function(dir) {
         this.nb++;
+        this.animDict = {};
+        //if(cond) this.animDict[i][j] = [x, y+1];
+        //let corrI = (dir === -1 ? this.x-1-i : i);
 
         switch (dir) {
             case 0: //right
@@ -116,15 +147,17 @@ function newGame(x, y) {
 
                         let x = i;
                         let y = j;
-                        let cond = true;
+                        let cond = 2;
 
-                        while(cond) {
+                        while(cond === 2) {
                             let cell = this.grid[x][y];
                             let nextCell = this.grid[x+1][y];
 
                             cond = cell.moveInto(nextCell);
 
                             x++;
+
+                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
 
                             if(x+1>=this.x) break;
                         }
@@ -137,15 +170,17 @@ function newGame(x, y) {
 
                         let x = i;
                         let y = j;
-                        let cond = true;
+                        let cond = 2;
 
-                        while(cond) {
+                        while(cond === 2) {
                             let cell = this.grid[x][y];
                             let nextCell = this.grid[x-1][y];
 
                             cond = cell.moveInto(nextCell);
 
                             x--;
+
+                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
 
                             if(x-1<0) break;
                         }
@@ -158,15 +193,17 @@ function newGame(x, y) {
 
                         let x = i;
                         let y = j;
-                        let cond = true;
+                        let cond = 2;
 
-                        while(cond) {
+                        while(cond === 2) {
                             let cell = this.grid[x][y];
                             let nextCell = this.grid[x][y+1];
 
                             cond = cell.moveInto(nextCell);
 
                             y++;
+
+                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
 
                             if(y+1>=this.y) break;
                         }
@@ -179,15 +216,17 @@ function newGame(x, y) {
 
                         let x = i;
                         let y = j;
-                        let cond = true;
+                        let cond = 2;
 
-                        while(cond) {
+                        while(cond === 2) {
                             let cell = this.grid[x][y];
                             let nextCell = this.grid[x][y-1];
 
                             cond = cell.moveInto(nextCell);
 
                             y--;
+
+                            if(cond > 0) this.animDict["x"+i+"y"+j] = [x, y];
 
                             if(y-1<0) break;
                         }
@@ -210,19 +249,20 @@ function newTile() {
 
     obj.value = null;
     obj.moveInto = function (tile) {
-        if(this.value === null) return false;
+        if(this.value === null) return 0;
 
         if(this.value === tile.value) {
             this.value = null;
             tile.value = tile.value*2;
             if(tile.value === 2048) grid.won = true;
+            return 1;
         } else if(tile.value === null) {
             tile.value = this.value;
             this.value = null;
-            return true;
+            return 2;
         }
 
-        return false;
+        return 0;
     };
 
     return obj;

@@ -79,7 +79,7 @@ body {
 
     display: grid;
     grid-auto-flow: column;
-    grid-gap: 0.25em;   /* todo: à modifier si tu veux changer l'espace entre les tiles :) */
+    grid-gap: 0.25em;   /* todo: à modifier si tu veux changer l'espace entre les tiles :)     si modifier, me le dire! certains trucs dependent de cette valeur mais c'est facile a changer */
 }
 
 #game {
