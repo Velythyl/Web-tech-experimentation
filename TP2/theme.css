@@ -69,17 +69,17 @@ body {
 }
 
 #grid {
-    position: relative;
+    position: absolute;
     width: 90%;
     height: 90%;
     background-color: #607D8B;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
 
-    display: grid;
-    grid-auto-flow: column;
-    grid-gap: 4px;   /* todo: à modifier si tu veux changer l'espace entre les tiles :)     si modifier, me le dire! certains trucs dependent de cette valeur mais c'est facile a changer */
+.tile {
+    position: absolute;
 }
 
 #game {
@@ -127,17 +127,6 @@ body {
     0% {transform: rotate(0deg); }
     50% {}    /* TODO mettre couleur intermediaire?? */
     100% {transform: rotate(360deg); }
-}
-
-/*https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting*/
-.empty-tile {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-    color: transparent;
 }
 
 .v2 {
