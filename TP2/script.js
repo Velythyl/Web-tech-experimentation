@@ -77,14 +77,7 @@ function setKeyEvents() {
 }
 
 function endTurn() {
-    let xy = grid.genRand();
     update();
-
-    if (xy !== false) $("#x" + xy[0] + "y" + xy[1]).css({
-        "animation-name": "rotate",
-        "animation-duration": "" + duration + "ms",
-        "animation-timing-function": "linear"
-    });
 
     checkForLoss();    //si on a pas trouve de cellules null dans genrand, on a une possibilite d'avoir perdu: on le teste
 
@@ -367,6 +360,8 @@ function buildGrid() {
 function update() {
     $(".counter").text("" + grid.nb);
 
+    let xy = grid.genRand();
+
     for (let key in grid.stateChanges) {
         const tile = $("#" + key);
 
@@ -377,4 +372,10 @@ function update() {
         tile.attr("class", "tile " + "v" + val);
         tile.html('<div class="v">' + (val === null ? "" : "" + val) + '</div>');
     }
+
+    if (xy !== false) $("#x" + xy[0] + "y" + xy[1]).css({
+        "animation-name": "rotate",
+        "animation-duration": "" + duration + "ms",
+        "animation-timing-function": "linear"
+    });
 }
