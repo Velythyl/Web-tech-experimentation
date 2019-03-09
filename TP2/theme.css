@@ -172,6 +172,10 @@ body {
 .v2048{
     background-color: #D32F2F;
 }
+
+.vnull {
+    /*TODO */
+}
 /*
     TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc) !
     TODO: faire le vrai background de #game, probablement white
