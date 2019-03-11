@@ -166,14 +166,14 @@ function newGame(x, y) {
     };
 
     grid.stateChanges = {};
-    grid.lastMoved = null;
+    grid.movedATile = false;    //as-t-on bouge une tuile lors de ce move?
     /*
         Prends une direction et la rend abstraite a l'aide des sous-fonctions de direction (left, right, up, down).
 
         Puis, appelle makeMove, qui fait un mouvement abstrait et les animations correspondantes
      */
     grid.move = function (dir) {
-        grid.lastMoved = null;
+        grid.movedATile = false;
 
         function left(x, y) {
             return ok(x - 1, y);
@@ -218,16 +218,35 @@ function newGame(x, y) {
             }
         }
 
-        if(this.lastMoved !== null) {
-            //https://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end
-            this.lastMoved.bind('transitionend', function () {
+        if(this.movedATile) {
+            setTimeout(function(){
                 endTurn();
-                grid.lastMoved.unbind();
-                setKeyEvents(); //refait les key events pour le prochain move
-            });
+                setKeyEvents();
+            }, duration);
         } else {
             setKeyEvents();
         }
+
+
+        /*
+            Note: le timing avec setTimeout n'est pas exacte: on attend la duration des animations APRES que ces
+            dernieres aient ete initialisees. Autrement dit, on attend un peu plus qu'on devrait. Une bonne alternative
+            serait d'attendre que la derniere tuile visitee ait termine son animation comme suit:
+
+            if(this.movedATile !== null) {
+                //https://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end
+                this.movedATile.bind('transitionend', function () {
+                    endTurn();
+                    grid.movedATile.unbind();
+                    setKeyEvents(); //refait les key events pour le prochain move
+                });
+            } else {
+                setKeyEvents();
+            }
+
+            Cependant, ceci cree des bugs: parfois, aucun event de transitionend n'est envoye, ce qui fait que
+            l'application gele puisqu'on n'appelle jamais setKeyEvents().
+         */
     };
     /*
         Fait un mouvement abstrait decrit par dir a l'aide de moveValue, fonction qui bouge une valeur vers une
@@ -292,7 +311,7 @@ function newGame(x, y) {
                 "transform": "translate( calc( 100% * " + x + gridSpacer + x + " ), calc( 100% * " + y + gridSpacer + y + " ) )"
             });
 
-            this.lastMoved = last;
+            this.movedATile = true;
         }
     };
 
@@ -353,7 +372,7 @@ function buildGrid() {
         }
     }
 
-    $("style").html(css);   //efface l'ancien css et le remplace par le nouveau
+    $("#style").html(css);   //efface l'ancien css et le remplace par le nouveau
     gridDiv.html(inside);
 }
 
