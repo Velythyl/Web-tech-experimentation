@@ -91,26 +91,18 @@ function checkForLoss() {
             if(val === null) return;
 
             /*
-                Les try-catch permettent de beaucoup simplifier la logique: on ne fait que betement prendre tous les
+                Les try-catch permettent de beaucoup simplifier la logique: on ne fait que betement prendre les
                 voisins de la cellule, et tant pis si c'est hors de la grille.
              */
             try {
-                const up = grid.grid[i][j - 1].value;
-                if (up === val) return;
-            } catch (ignored) {
-            }
-            try {
                 const down = grid.grid[i][j + 1].value;
                 if (down === val) return;
-            } catch (ignored) {
-            }
+            } catch (ignored) {}
+
             try {
-                const left = grid.grid[i - 1][j].value;
-                if (left === val) return;
-            } catch (ignored) {
                 const right = grid.grid[i + 1][j].value;
                 if (right === val) return;
-            }
+            } catch (ignored) {}
         }
     }
 
