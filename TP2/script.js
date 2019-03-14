@@ -10,7 +10,7 @@ $(document).ready(function () {
     });
 
     $("#return-button").click(function () {
-        $("#init-wrapper").show();
+        window.location.reload(true);
     });
 
     $(window).resize(function () {
@@ -33,12 +33,6 @@ function initGame() {
     newGame(x, y);
 
     $("#init-wrapper").hide();
-
-    // reset divs
-    $("#game").show();
-    $("#lost").show();
-    $("#won").show();
-    $("#alert").hide();
 
     setKeyEvents();
 }
