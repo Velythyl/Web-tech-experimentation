@@ -27,7 +27,6 @@ input {
     background-color: transparent;
     border: thin solid #607D8B;
     text-align: center;
-    caret-color: black;
 }
 
 button {
@@ -56,7 +55,7 @@ button:hover {
     width: 90%;
 }
 
-#init-wrapper {
+#game-init {
     height: 100%;
     width: 100%;
     position: fixed;
@@ -122,10 +121,13 @@ body {
     margin-top: 2em;
 }
 
-/* https://stackoverflow.com/questions/7988962/continuous-css-rotation-animation-on-hover-animated-back-to-0deg-on-hover-out */
-@keyframes rotate { /*TODO changer l'animation pour un shake? */
+/*
+Fais une rotation de 360 degres pour les nouvelles tuiles
+
+https://stackoverflow.com/questions/7988962/continuous-css-rotation-animation-on-hover-animated-back-to-0deg-on-hover-out
+*/
+@keyframes rotate {
     0% {transform: rotate(0deg); }
-    50% {}    /* TODO mettre couleur intermediaire?? */
     100% {transform: rotate(360deg); }
 }
 
@@ -172,14 +174,3 @@ body {
 .v2048{
     background-color: #D32F2F;
 }
-
-.vnull {
-    /*TODO */
-}
-/*
-    TODO: faire la classe tile qui definit l'apparence des tuiles (genre la bordure, shadow? etc) !
-    TODO: faire le vrai background de #game, probablement white
-    TODO: faire centrer verticalement et horizontalement le #grid en utilisant la meme methode que .v
-
-    ne pas mettre de regles pour .col et .row!!
- */

@@ -28,8 +28,112 @@
 
     <h3>Commentaires sur le HTML</h3>
 
+    <p>
+        On remarque trois grandes parties du HTML5 du jeu: le game-init, le game et le game-end. À l'aide du css, on
+        a placé le game-init au dessus de game qui est lui-même au-dessus de game-end. Donc, lorsqu'on fait disparaître
+        game-init, on arrive directement sur game sans autre traitement. Puis, lorsque le jeu est gagné ou perdu, on
+        fait disparaître game et on arrive directement sur game-end sans autre traitement. Tout est facilement géré avec
+        le z-index.
+    </p>
+
+    <p>
+        Game-init est le menu de création de jeu. On remarque tout de suite qu'il y a deux champs de sélection de
+        dimension: notre jeu est en effet généralisé à N x M au lieu de simplement N x N. Ces champs sont des balises
+        input de HTML5 de type number, donc la gestion de l'input est facilement faite par le html par défaut. On gère
+        aussi les cas vides (on ne peut avoir une grille de jeu avec "rien" comme dimenson) et on limite la dimension
+        minimale à plus que 1 dans le CSS.
+    </p>
+
+    <p>
+        Le bouton "Nouvelle partie!" commence simplement une nouvelle partie avec la fonction initGame() du script.js
+    </p>
+
     <h3>Commentaires sur le CSS</h3>
 
+    <p>
+        Le CSS est assez simple: on y retrouve un .vX (avec x = 2, 4, 8, ..., 2048) pour chaque sorte de tuile pour leur
+        assigner une couleur propre.
+
+        On y retrouve aussi beaucoup de divs centrés avec (top: 50%; left: 50%; transform(-50%, -50%);): ceci déplace
+        les divs de 50% de leur position puis les recule de 50% de leur grosseur dans l'autre sens. Ceci a été tiré de
+        <a href="https://css-tricks.com/centering-css-complete-guide/">ce site utile</a>.
+    </p>
+
     <h3>Commentaires sur le script</h3>
+
+    <p>
+        Le script est en fait assez simple. Voici sa logique après que "Nouvelle partie!" a été cliqué:
+    </p>
+
+    <ol>
+        <li>
+            initGame(): on va chercher les dimensions de la table dans les champs de game-init. On y appelle newGame(),
+            puis on cache game-init.
+        </li>
+        <li>
+            newGame(): on y crée un nouvel objet "grid". Cette grid contient:
+            <ul>
+                <li>
+                    nb, le nombre de coups faits (initialement 0)
+                </li>
+                <li>
+                    lost, qui dit si on a gagné (initialement faux)
+                </li>
+                <li>
+                    won, qui dit si on a perdu (initialement faux)
+                </li>
+                <li>
+                    x, la dimension en x (nombre de colonnes)
+                </li>
+                <li>
+                    y, la dimension en y (nombre de lignes)
+                </li>
+                <li>
+                    grid, un tableau 2D de forme grid[x][y] contenant toutes les tuiles (qui sont toutes initialement de
+                    valeur null)
+                </li>
+                <li>
+                    gendRand(), une fonction qui génère une nouvelle tuile de valeur 2 ou 4 parmi toutes les tuiles nulles
+                </li>
+                <li>
+                    move(dir), une fonction qui fait un mouvement concret (haut, bas, droit, gauche) dans la grille.
+                    Move contient à son tour d'autres fonctions:
+                    <ul>
+                        <li>
+                            left(x, y), qui retourne la grille se trouvant à gauche de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            right(x, y), qui retourne la grille se trouvant à droite de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            up(x, y), qui retourne la grille se trouvant en haut de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            down(x, y), qui retourne la grille se trouvant en bas de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            ok(x, y), qui est appelée par les trois fonctions ci-haut pour valider si la tuile
+                            retournée est une tuile valide de la grille.
+                        </li>
+                    </ul>
+                    Move doit parcourir la grille dans le bon sens: si on va vers la droite, on doit comparer toutes les
+                    tuiles avec leurs voisines de droite en partant par la tuile la plus à droite. La même logique
+                    s'applique pour chaque direction. Pour chaque tuile, on appelle makeMove(i, j, dir) avec i et j les
+                    coordonnées de la tuile et dir la direction voulue (une des fonctions de directions ci-haut).
+                </li>
+                <li>
+                    makeMove(i, j, dir), une fonction qui fait et anime un mouvement abstrait dir sur une position i, j.
+                    Pour ce faire, makeMove contient une seconde fonction moveValue(value, x, y) qui fait le mouvement.
+                    Donc, makeMove appelle moveValue et si moveValue fait un mouvement, on l'anime et on ajoute les
+                    tuiles changées à un dictionnaire pour que update() (voir ci-bas) change leur div html correspondant.
+                    <ul>
+                        <li>
+                            moveValue(value, x, y), une fon
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
 </body>
 </html>

@@ -32,7 +32,7 @@ function initGame() {
 
     newGame(x, y);
 
-    $("#init-wrapper").hide();
+    $("#game-init").hide();
 
     setKeyEvents();
 }
@@ -61,7 +61,7 @@ function setKeyEvents() {
                 break;
 
             case 13:    //enter
-                if ($("#init-wrapper").is(":visible")) initGame();
+                if ($("#game-init").is(":visible")) initGame();
             default:
                 return;
         }
