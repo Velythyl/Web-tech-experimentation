@@ -1,6 +1,6 @@
-var grid;
-let gap = 4; //4 px de gap
-const duration = 300;
+let grid;
+const gap = 4; //4 px de gap
+const duration = 300;   //duration des animations
 
 $(document).ready(function () {
     $("#alert").hide();
@@ -60,8 +60,6 @@ function setKeyEvents() {
                 grid.move(-2);
                 break;
 
-            case 13:    //enter
-                if ($("#game-init").is(":visible")) initGame();
             default:
                 return;
         }
@@ -88,7 +86,7 @@ function checkForLoss() {
         for (let j = 0; j < grid.y; j++) {
             let val = grid.grid[i][j].value;
 
-            if(val === null) return;
+            if (val === null) return;
 
             /*
                 Les try-catch permettent de beaucoup simplifier la logique: on ne fait que betement prendre les
@@ -97,12 +95,14 @@ function checkForLoss() {
             try {
                 const down = grid.grid[i][j + 1].value;
                 if (down === val) return;
-            } catch (ignored) {}
+            } catch (ignored) {
+            }
 
             try {
                 const right = grid.grid[i + 1][j].value;
                 if (right === val) return;
-            } catch (ignored) {}
+            } catch (ignored) {
+            }
         }
     }
 
@@ -182,7 +182,6 @@ function newGame(x, y) {
             else return grid.grid[x][y];
         }
 
-        this.nb++;
         this.stateChanges = {};
 
         if (dir === -1 || dir === 1) {
@@ -204,8 +203,9 @@ function newGame(x, y) {
             }
         }
 
-        if(this.movedATile) {
-            setTimeout(function(){
+        if (this.movedATile) {
+            this.nb++;
+            setTimeout(function () {
                 endTurn();
                 setKeyEvents();
             }, duration);
@@ -255,8 +255,9 @@ function newGame(x, y) {
                     bug de JS?)
                  */
                 try {
-                    if(grid.stateChanges["x"+tile.x+"y"+tile.y][2]) return false;
-                } catch (ignored) {}
+                    if (grid.stateChanges["x" + tile.x + "y" + tile.y][2]) return false;
+                } catch (ignored) {
+                }
 
                 tile.value = tile.value * 2;
                 tile.locked = true;
