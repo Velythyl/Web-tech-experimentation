@@ -1,0 +1,17 @@
+nav {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    justify-content: space-around;
+
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

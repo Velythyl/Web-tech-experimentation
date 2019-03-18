@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+    <title>Rapport TP2</title>
+    <!-- https://css-tricks.com/snippets/html/xhtml-1-0-strict-page-structure/ pour utf8 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="css_rapport.css"/>
+</head>
+<body>
+    <div id="nav">
+        <a href="jeu.html">jeu.html</a>
+        <a href="css_jeu.css">css_jeu.css</a>
+        <a href="script.js">script.js</a>
+        <a href="css_rapport.css">css_rapport.css</a>
+    </div>
+
+    <h3>Équipe</h3>
+    <ul>
+        <li>
+            Nom: Charlie Gauthier, matricule: 20105623
+        </li>
+        <li>
+            Nom: Maud Moerel-Martini, matricule: 20037754
+        </li>
+    </ul>
+
+    <h3>Commentaires sur le HTML</h3>
+
+    <p>
+        On remarque trois grandes parties du HTML5 du jeu: le game-init, le game et le game-end. À l'aide du css, on
+        a placé le game-init au dessus de game qui est lui-même au-dessus de game-end. Donc, lorsqu'on fait disparaître
+        game-init, on arrive directement sur game sans autre traitement. Puis, lorsque le jeu est gagné ou perdu, on
+        fait disparaître game et on arrive directement sur game-end sans autre traitement. Tout est facilement géré avec
+        le z-index.
+    </p>
+
+    <p>
+        Game-init est le menu de création de jeu. On remarque tout de suite qu'il y a deux champs de sélection de
+        dimension: notre jeu est en effet généralisé à N x M au lieu de simplement N x N. Ces champs sont des balises
+        input de HTML5 de type number, donc la gestion de l'input est facilement faite par le html par défaut. On gère
+        aussi les cas vides (on ne peut avoir une grille de jeu avec "rien" comme dimenson) et on limite la dimension
+        minimale à plus que 1 dans le CSS.
+    </p>
+
+    <p>
+        Le bouton "Nouvelle partie!" commence simplement une nouvelle partie avec la fonction initGame() du script.js
+    </p>
+
+    <h3>Commentaires sur le CSS</h3>
+
+    <p>
+        Le CSS est assez simple: on y retrouve un .vX (avec x = 2, 4, 8, ..., 2048) pour chaque sorte de tuile pour leur
+        assigner une couleur propre.
+
+        On y retrouve aussi beaucoup de divs centrés avec (top: 50%; left: 50%; transform(-50%, -50%);): ceci déplace
+        les divs de 50% de leur position puis les recule de 50% de leur grosseur dans l'autre sens. Ceci a été tiré de
+        <a href="https://css-tricks.com/centering-css-complete-guide/">ce site utile</a>.
+    </p>
+
+    <h3>Commentaires sur le script</h3>
+
+    <p>
+        Le script est en fait assez simple. Les commentaires dans le code sont très complets, mais voici sa logique
+        après que "Nouvelle partie!" a été cliqué pour illustrer:
+    </p>
+
+    <ol>
+        <li>
+            initGame(): on va chercher les dimensions de la table dans les champs de game-init. On y appelle newGame(),
+            puis on cache game-init. On appelle ensuite setKeyEvents() pour écouter les mouvements du joueur.
+        </li>
+        <li>
+            newGame(): on y crée un nouvel objet "grid". Cette grid contient:
+            <ul>
+                <li>
+                    nb, le nombre de coups faits (initialement 0)
+                </li>
+                <li>
+                    lost, qui dit si on a gagné (initialement faux)
+                </li>
+                <li>
+                    won, qui dit si on a perdu (initialement faux)
+                </li>
+                <li>
+                    x, la dimension en x (nombre de colonnes)
+                </li>
+                <li>
+                    y, la dimension en y (nombre de lignes)
+                </li>
+                <li>
+                    movedATile, indique si on a bougé une tuile lors d'un move
+                </li>
+                <li>
+                    stateChanges, un objet qui comprend toutes les tuiles ayant changé lors du dernier move
+                </li>
+                <li>
+                    grid, un tableau 2D de forme grid[x][y] contenant toutes les tuiles (qui sont toutes initialement de
+                    valeur null)
+                    <ul>
+                        <li>
+                            Les tuiles sont des objets contenant leur position en x et en y dans grid ainsi que leur
+                            valeur et une booléenne locked.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    gendRand(), une fonction qui génère une nouvelle tuile de valeur 2 ou 4 parmi toutes les tuiles nulles
+                </li>
+                <li>
+                    move(dir), une fonction qui fait un mouvement concret (haut, bas, droit, gauche) dans la grille.
+                    Move contient à son tour d'autres fonctions:
+                    <ul>
+                        <li>
+                            left(x, y), qui retourne la grille se trouvant à gauche de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            right(x, y), qui retourne la grille se trouvant à droite de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            up(x, y), qui retourne la grille se trouvant en haut de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            down(x, y), qui retourne la grille se trouvant en bas de la coordonnée (x, y)
+                        </li>
+                        <li>
+                            ok(x, y), qui est appelée par les trois fonctions ci-haut pour valider si la tuile
+                            retournée est une tuile valide de la grille.
+                        </li>
+                    </ul>
+                    Move doit parcourir la grille dans le bon sens: si on va vers la droite, on doit comparer toutes les
+                    tuiles avec leurs voisines de droite en partant par la tuile la plus à droite. La même logique
+                    s'applique pour chaque direction. Pour chaque tuile, on appelle makeMove(i, j, dir) avec i et j les
+                    coordonnées de la tuile et dir la direction voulue (une des fonctions de directions ci-haut). Si
+                    makeMove fait un mouvement (on le sait d'après movedATile), on fait endTurn(), sinon, on ne fait que
+                    réinitialiser le event listener pour les mouvements.
+                </li>
+                <li>
+                    makeMove(i, j, dir), une fonction qui fait et anime un mouvement abstrait dir sur une position i, j.
+                    Pour ce faire, makeMove contient une seconde fonction moveValue(value, x, y) qui fait le mouvement.
+                    Donc, makeMove appelle moveValue et si moveValue fait un mouvement, on l'anime et on ajoute les
+                    tuiles changées à un dictionnaire pour que update() (voir ci-bas) change leur div html correspondant.
+                    <ul>
+                        <li>
+                            moveValue(value, x, y), une fonction qui fait un mouvement abstrait dans une direction dir.
+                            On y prend la prochaine tuile. On regarde sa valeur: si elle est null, on y place la value et
+                            on appelle récursivement maveValue sur la prochaine position. Si elle est égale à la value,
+                            on la double dans la tuile, on met grid.won à true si la nouvelle valeur est 2048, et on
+                            retourne. Si on est hors de la grille ou que value est null, on retourne false.
+                            <br/>
+                            On utilise l'attribut locked des tuiles pour voir si on peut continuer un mouvement après la
+                            combinaison de deux tuiles.
+                        </li>
+                    </ul>
+                    Après l'appel à moveValue, s'il il y a eu un mouvement, on l'anime avec un css-transform. On change
+                    aussi movedATile à true, comme ça lorsque makeMove retourne, on sait dans move s'il y a eu un
+                    mouvement. On lock les tuiles qui ont changé pour empêcher makeMove de faire de faux mouvements. On
+                    ajoute les tuiles qui ont changé à stateChanges.
+                </li>
+            </ul>
+            On appelle ensuite deux fois gendRand() pour créer les deux tuiles initiales, puis buildGrid()
+        </li>
+        <li>
+            buildGrid(): on construit la grille HTML avec des divs. De cette façon, on peut leur donner position: fixed
+            ou absolute pour que le browser ne fasse pas des "reflow" lors des animations de mouvements. Cette fonction
+            calcule donc la position de chaque grille et leur grosseur. On place les règles CSS pour ces informations
+            dans une balise "style" dans le head du document. De cette façon, lorsqu'on doit appeler buildGrid à nouveau,
+            on peut simplement remplacer tout le contenu de cette balise sans autre traitement.
+            <br/>
+            buildGrid est aussi appelé lorsque la fenêtre se fait "resize": on recalcule toute la grille.
+        </li>
+        <li>
+            On est maintenant dans l'état d'écoute: on écoute les mouvements du joueur. Lorsqu'on en détecte un, puisque
+            l'écouteur est fait avec la fonction "one" de JQuery, on arrête immédiatement d'écouter. Puis, on appelle la
+            fonction move de grid décrite ci-haut. Si le mouvement est valide (si un mouvement de tuile se passe),
+            on incrémente grid.nb, on attend que les animations du mouvement (faites dans makeMove) s'arrête avec un
+            setTimeout, puis on appelle ensuite endTurn(), puis on refait setKeyEvents.
+        </li>
+        <li>
+            endTurn(): on fait la fin d'un tour. Pour ce faire, on appelle update(), puis on vérifie si la grille est
+            dans un état de perte avec checkForLoss().
+            <ul>
+                <li>
+                    update(): on passe par chaque clé-valeur de stateChanges et on fait ces changements dans les divs de
+                    la grille du jeu. On appelle aussi grid.genRand() pour créer une nouvelle tuile, et on fait une
+                    animation de rotation pour bien l'indiquer au joueur. De plus, comme on sait que cette fonction ne
+                    se fait appeler que si un move a été fait et était valide, on peut sélectionner tous les éléments de
+                    classe counter pour leur assigner le nombre de coups fait (grid.nb).
+                </li>
+                <li>
+                    checkForLoss(): pour chaque tuile: si sa valeur est null, on retourne. Si sa valeur est la même que
+                    celle d'une de ses voisines, on retourne. Si on atteint la fin de la fonction sans retourner, on met
+                    grid.lost à true.
+                </li>
+            </ul>
+            Si on a gagné ou perdu, on cache le div du jeu pour laisser apparaître game-end qui se cachait en-dessous
+            (et on cache le div du message de perte si on a gagné et vice-versa si on a perdu) (on passe à l'étape 6).
+            Sinon, on retourne à l'étape 4.
+        </li>
+        <li>
+            Lorsqu'on a terminé le jeu, on attend simplement que le bouton "Retourner au menu" se fasse cliquer. On fait
+            ensuite un refresh de la page (comme si le joueur avait fait F5), ce qui réinitialise TOUT dans le HTML
+            comme dans le script.
+        </li>
+    </ol>
+</body>
+</html>

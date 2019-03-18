@@ -1,0 +1,176 @@
+.col {
+    display: inline-block;
+    width: calc(100% / 3);
+
+    padding: 1em;
+    margin-top: 2em;
+}
+
+.accent {
+    background-color: #FFC107;
+    border-radius: 1em;
+    border: thin solid #FFC107;
+}
+
+.right-col {
+    margin-left: calc(100% / 8);
+}
+
+#alert {
+    width: 100%;
+    text-align: center;
+    color: red;
+}
+
+input {
+    width: 90%;
+    background-color: transparent;
+    border: thin solid #607D8B;
+    text-align: center;
+}
+
+button {
+    padding: 1em;
+    margin: 2em;
+}
+
+button:hover {
+    background-color: #607D8B;
+    border-radius: 1em;
+    border: thin solid #FFC107;
+    color: #FFC107;
+}
+
+.pretty-div {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #607D8B;
+    border-radius: 1em;
+    border: thin solid #607D8B;
+
+    width: 90%;
+}
+
+#game-init {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-color: #FFFCE7;
+    z-index: 2;
+}
+
+body {
+    margin: 0;
+}
+
+#grid {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background-color: #607D8B;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tile {
+    position: absolute;
+}
+
+#game {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #FFFCE7;
+    z-index: 1;
+    text-align: center;
+}
+
+#game-end {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    background-color: #FFFCE7;
+}
+
+#counter {
+    position: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.v {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.mess {
+    position: relative;
+    width: calc(100% / 3);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em;
+    margin-top: 2em;
+}
+
+/*
+Fais une rotation de 360 degres pour les nouvelles tuiles
+
+https://stackoverflow.com/questions/7988962/continuous-css-rotation-animation-on-hover-animated-back-to-0deg-on-hover-out
+*/
+@keyframes rotate {
+    0% {transform: rotate(0deg); }
+    100% {transform: rotate(360deg); }
+}
+
+.v2 {
+    background-color: #448AFF;
+}
+
+.v4 {
+    background-color: #0288D1;
+}
+
+.v8 {
+    background-color: #0097A7;
+}
+
+.v16 {
+    background-color: #689F38;
+}
+
+.v32 {
+    background-color: #8BC34A;
+}
+
+.v64 {
+    background-color: #CDDC39;
+}
+
+.v128 {
+    background-color: #FFEB3B;
+}
+
+.v256 {
+    background-color: #ffd605;
+}
+
+.v512{
+    background-color: #e69715;
+}
+
+.v1024{
+    background-color: #FF5252;
+}
+
+.v2048{
+    background-color: #D32F2F;
+}
