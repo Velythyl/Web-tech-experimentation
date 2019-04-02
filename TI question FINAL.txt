@@ -1,0 +1,26 @@
+TI FINAL 
+
+le but du web sémantique:
+
+
+
+nous on va voir rdfschema et ontology
+le reste demande trop de prérequis
+
+
+C'est quoi un triplet:  sujet(fait l'action) prédicat(relation d'association) objet (subit l'action)
+
+
+qu est ce qu un web semantique :  rendre la semantique de l information accessible a la machine (DEF DU PROF A CONNAITRE <3)
+
+avantages du web semantique : verification de la constance de l'information
+partage de l information pour base unique
+inférence de nouvelle information
+prise de décision
+
+
+c'est quoi rdf c'est un langage a base de triplet : etablir des realtions entre deux concepts : sujet objet 
+
+qu'est ce qu'une ontology : modele formel d'une representation de connaissance d'un domaine particulier
+web semantique vs web classique ( 2.0 et inférieur ) : sémantique : lis les données entre elle, represente la connaissance, classique : affiche présentation de l'information : exposer l'info
+RDF sémantique alors que XML est 
