@@ -1,4 +1,4 @@
-/*TODO
+/*TODO/*TODO
 Club de sport(joueurs, gestionnaire)
 Individu(ID, nom, prénom, login, mot de passe) ID clé primaire
 joueurs(I_ID) clé étrangère
@@ -50,9 +50,7 @@ CREATE TABLE Terrain(
 	20_21 INT NOT NULL
 );
 
-grant all on schema IFT3325TP3 to liurober_app;
-grant all on all tables in schema kijiji to liurober_app;
-grant all on schema kijiji to blanchdo_app;
-grant all on all tables in schema kijiji to blanchdo_app;
-
+grant all on schema IFT3325TP3 to gautchar;
+grant all on all tables in schema IFT3325TP3 to gautchar;
+    
 commit;
