@@ -1,0 +1,1 @@
+ssh gautchar@arcade.iro.umontreal.ca -L 1139:arcade:139 psql -h postgres < test.sql
