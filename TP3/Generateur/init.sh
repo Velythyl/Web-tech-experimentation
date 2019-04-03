@@ -2,6 +2,6 @@
 
 echo "You provided argument $1"
 
-mysql -p -h mysql <DDL.sql
-mysql -p -h mysql <Populate.sql
-mysql -p -h mysql <DML.sql
+mysql -p -h mysql -u gautchar <DDL.sql
+mysql -p -h mysql -u gautchar <Populate.sql
+mysql -p -h mysql -u gautchar <DML.sql
