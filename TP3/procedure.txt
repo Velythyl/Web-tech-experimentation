@@ -1,0 +1,10 @@
+Creation:
+	1) ssh tonTruc@arcade.iro.umontreal.ca
+	2) entrer ton mdp fucké de 14 fucking caractères
+	3) ssh -n remise /usr/local/bin/mysqlpasswd-remise
+	4) prendre en note ton mdp pour le compte "username" (sans "_web")
+	5) mysql -p -h mysql
+	6) entrer ton mdp noté en #4
+
+Local to ssh:
+	TODO
