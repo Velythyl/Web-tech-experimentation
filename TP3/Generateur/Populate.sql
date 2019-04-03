@@ -1,6 +1,6 @@
 begin transaction;
 
-set search_path to kijiji;
+set search_path to IFT3325TP3;
 
 \copy categorie(Nom) from './genned_csv/categories.csv' WITH (FORMAT csv);
 
