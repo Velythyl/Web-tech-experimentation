@@ -1,4 +1,4 @@
-/*TODO/*TODO
+/*TODO
 Club de sport(joueurs, gestionnaire)
 Individu(ID, nom, prénom, login, mot de passe) ID clé primaire
 joueurs(I_ID) clé étrangère
@@ -8,8 +8,11 @@ Terrain(T_ID, Date, 6-7, 7-8, 8-9, 9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-1
 
 END TODO*/
 
-create schema IFT3225TP3;
-use IFT3225TP3;
+begin transaction;
+
+drop schema if exists IFT3325TP3 cascade;
+create schema IFT3325TP3;
+set search_path to IFT3325TP3;
 
 CREATE TABLE Individu(
     ID INT PRIMARY KEY,
@@ -47,6 +50,7 @@ CREATE TABLE Terrain(
 	20_21 INT NOT NULL
 );
 
-/*
-grant all on schema IFT3225TP3 to gautchar;
-grant all on all tables in schema IFT3225TP3 to gautchar;*/
+grant all on schema IFT3325TP3 to gautchar;
+grant all on all tables in schema IFT3325TP3 to gautchar;
+    
+commit;
