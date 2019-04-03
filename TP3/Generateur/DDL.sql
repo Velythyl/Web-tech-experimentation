@@ -8,9 +8,9 @@ Terrain(T_ID, Date, 6-7, 7-8, 8-9, 9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-1
 
 END TODO*/
 
-drop schema if exists IFT3325TP3 cascade;
+drop schema if exists IFT3325TP3;
 create schema IFT3325TP3;
-set search_path to IFT3325TP3;
+use IFT3325TP3;
 
 CREATE TABLE Individu(
     ID INT PRIMARY KEY,
