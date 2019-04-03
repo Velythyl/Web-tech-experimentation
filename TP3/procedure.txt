@@ -13,3 +13,11 @@ Stuff:
 
 Local to ssh:
 	TODO
+
+Login:
+	Usager       : gautchar
+	Mot de passe : gxfAC@KAALDEKK
+
+	MAINTENANT:
+	Usager       : gautchar
+	Mot de passe : mdp1234
