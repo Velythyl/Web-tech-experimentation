@@ -6,5 +6,10 @@ Creation:
 	5) mysql -p -h mysql
 	6) entrer ton mdp noté en #4
 
+Stuff:
+	https://support.iro.umontreal.ca/doku.php?id=logiciel:mysql
+	http://www-etud.iro.umontreal.ca/~jridijam/ift3225/SQL/MySQL.html
+	https://support.iro.umontreal.ca/doku.php?id=compte:page_web
+
 Local to ssh:
 	TODO
