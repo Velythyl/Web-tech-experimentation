@@ -47,5 +47,6 @@ CREATE TABLE Terrain(
 	20_21 INT NOT NULL
 );
 
+/*
 grant all on schema IFT3325TP3 to gautchar;
-grant all on all tables in schema IFT3325TP3 to gautchar;
+grant all on all tables in schema IFT3325TP3 to gautchar;*/
