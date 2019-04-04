@@ -22,9 +22,11 @@ with open("ca-500.csv") as csv_file:
 gestionnaire = []
 gestionnaire.append((choice(individus)[0],))
 
-terrains = []
+reservations = []
 #https://stackoverflow.com/questions/7274267/print-all-day-dates-between-two-dates
 from datetime import date, timedelta
+
+r_dates = []
 
 d1 = date(2019, 4, 1)  # start date
 d2 = date(2019, 8, 10)  # end date
@@ -33,11 +35,10 @@ delta = d2 - d1         # timedelta
 
 for i in range(delta.days + 1):
     print(d1 + timedelta(i))
-    for t_id in range(1, 6):
-        terr = [t_id, d1+timedelta(i)]
-        for heure in range(6, 21):
-            terr.append(""+str(heure)+"_"+str(heure+1))
-        terrains.append(terr)
+    r_dates.append(d1+timedelta(i))
+
+for date in sample(r_dates, 75):
+    reservations.append([choice([1, 2, 3, 4, 5]), date, choice([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]), choice(joueurs)[0]])
 
 #https://www.programiz.com/python-programming/working-csv-files
 with open("./genned_csv/individu.csv", "w") as f:
@@ -52,8 +53,8 @@ with open("./genned_csv/gestionnaire.csv", "w") as f:
     writer = csv.writer(f)
     writer.writerows(gestionnaire)
 
-with open("./genned_csv/terrain.csv", "w") as f:
+with open("./genned_csv/reservation.csv", "w") as f:
     writer = csv.writer(f)
-    writer.writerows(terrains)
+    writer.writerows(reservations)
 
 
