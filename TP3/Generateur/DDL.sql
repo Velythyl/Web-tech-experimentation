@@ -37,7 +37,7 @@ CREATE TABLE Reservation (
     J_ID INT NOT NULL,
     FOREIGN KEY(J_ID) REFERENCES Individu(ID),
     CONSTRAINT def_heures CHECK (Heure >= 6 AND Heure <= 20),
-    CONSTRAINT key PRIMARY KEY (T_ID, R_date, Heure)
+    PRIMARY KEY (T_ID, R_date, Heure)
 );
 
 /*
