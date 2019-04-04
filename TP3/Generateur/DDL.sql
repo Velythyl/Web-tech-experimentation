@@ -12,23 +12,25 @@ drop database gautchar_IFT3225TP3;
 create database gautchar_IFT3225TP3;
 use gautchar_IFT3225TP3;
 
-CREATE TABLE Individu(
+CREATE TABLE Individu (
     ID INT PRIMARY KEY,
     nom VARCHAR (255) NOT NULL,
     prenom VARCHAR (255) NOT NULL,
     mot_de_passe VARCHAR (30) NOT NULL,
-    login VARCHAR (255) UNIQUE NOT NULL
+    login VARCHAR (30) UNIQUE NOT NULL
 );
 
-CREATE TABLE Joueur(
-    ID INT REFERENCES Individu(ID) NOT NULL
+CREATE TABLE Joueur (
+    ID INT NOT NULL,
+    FOREIGN KEY(ID) REFERENCES Individu(ID)
 );
 
-CREATE TABLE Gestionnaire(
-    ID INT REFERENCES Individu(ID) NOT NULL
+CREATE TABLE Gestionnaire (
+    ID INT NOT NULL,
+    FOREIGN KEY(ID) REFERENCES Individu(ID)
 );
 
-CREATE TABLE Reservation(
+CREATE TABLE Reservation (
 	T_ID INT,
 	R_date DATE NOT NULL DEFAULT CURRENT DATE,
     Heure TINYINT NOT NULL,
