@@ -1,4 +1,4 @@
-USE gautchar_IFT3325TP3;
+USE gautchar_IFT3225TP3;
 
 /*https://stackoverflow.com/questions/3635166/how-to-import-csv-file-to-mysql-table*/
 
