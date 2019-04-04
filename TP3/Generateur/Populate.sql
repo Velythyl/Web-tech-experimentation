@@ -20,7 +20,7 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY ''
 LINES TERMINATED BY '\n';
 
-LOAD DATA LOCAL INFILE 'genned_csv/Reservation.csv'
+LOAD DATA LOCAL INFILE 'genned_csv/reservation.csv'
 INTO TABLE Reservation
 FIELDS TERMINATED BY ','
 ENCLOSED BY ''
