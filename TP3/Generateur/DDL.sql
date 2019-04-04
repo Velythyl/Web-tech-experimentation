@@ -40,6 +40,7 @@ CREATE TABLE Reservation (
     PRIMARY KEY (T_ID, R_date, Heure)
 );
 
+GRANT ALL PRIVILEGES ON gautchar_IFT3225TP3.* TO 'gautchar'@'localhost';
 /*
 grant all on schema IFT3225TP3 to gautchar;
 grant all on all tables in schema IFT3225TP3 to gautchar;*/
