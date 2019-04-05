@@ -12,7 +12,10 @@ Stuff:
 	https://support.iro.umontreal.ca/doku.php?id=compte:page_web
 
 Local to ssh:
-	TODO
+        MDP : 6Ye,AA2N*Nd8x,7Z
+ 
+	ssh gautchar@arcade.iro.umontreal.ca -L 1139:arcade:139 mysql -u gautchar -p -h mysql < DML.sql
+
 
 Login:
 	Usager       : gautchar
