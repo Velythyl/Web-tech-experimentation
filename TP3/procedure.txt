@@ -1,10 +1,10 @@
-Creation:
+Creation (Jeremy)
 	1) ssh tonTruc@arcade.iro.umontreal.ca
-	2) entrer ton mdp fucké de 14 fucking caractères
+	2) entrer ton mdp fuckÃ© de 14 fucking caractÃ¨res
 	3) ssh -n remise /usr/local/bin/mysqlpasswd-remise
 	4) prendre en note ton mdp pour le compte "username" (sans "_web")
 	5) mysql -p -h mysql
-	6) entrer ton mdp noté en #4
+	6) entrer ton mdp notÃ© en #4
 
 Stuff:
 	https://support.iro.umontreal.ca/doku.php?id=logiciel:mysql
