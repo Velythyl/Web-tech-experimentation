@@ -8,7 +8,7 @@ Terrain(T_ID, Date, 6-7, 7-8, 8-9, 9-10, 10-11, 11-12, 12-13, 13-14, 14-15, 15-1
 
 END TODO*/
 
-drop database gautchar_IFT3225TP3;
+drop database if exists gautchar_IFT3225TP3;
 create database gautchar_IFT3225TP3;
 use gautchar_IFT3225TP3;
 

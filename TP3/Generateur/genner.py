@@ -41,20 +41,20 @@ for date in sample(r_dates, 75):
     reservations.append([choice([1, 2, 3, 4, 5]), date, choice([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]), choice(joueurs)[0]])
 
 #https://www.programiz.com/python-programming/working-csv-files
-with open("./genned_csv/individu.csv", "w") as f:
-    writer = csv.writer(f)
+with open("./genned_csv/individu.csv", "w", newline='') as f:
+    writer = csv.writer(f, lineterminator='\n')
     writer.writerows(individus)
 
-with open("./genned_csv/joueur.csv", "w") as f:
-    writer = csv.writer(f)
+with open("./genned_csv/joueur.csv", "w", newline='') as f:
+    writer = csv.writer(f, lineterminator='\n')
     writer.writerows(joueurs)
 
-with open("./genned_csv/gestionnaire.csv", "w") as f:
-    writer = csv.writer(f)
+with open("./genned_csv/gestionnaire.csv", "w", newline='') as f:
+    writer = csv.writer(f, lineterminator='\n')
     writer.writerows(gestionnaire)
 
-with open("./genned_csv/reservation.csv", "w") as f:
-    writer = csv.writer(f)
+with open("./genned_csv/reservation.csv", "w", newline='') as f:
+    writer = csv.writer(f, lineterminator='\n')
     writer.writerows(reservations)
 
 
