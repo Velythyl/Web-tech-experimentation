@@ -1,1 +1,3 @@
 https://www.quora.com/How-do-I-create-a-basic-login-and-register-page-in-HTML
+
+https://www.php.net/manual/en/function.session-start.php 
