@@ -16,4 +16,4 @@ mysql -u gautchar -p -h mysql". Sur un autre terminal, lorsque DML.sql a finit d
 mdp: 6Ye,AA2N*Nd8x,7Z
 
 
-🎉🎉je suis sure que tu peux en faire un leh :) et si ca marche pas c'est ok je le ferai! mais cest un bon exercice 😎🌈
+🎉🎉je suis sure que tu peux en faire :) et si ca marche pas c'est ok je le ferai! mais cest un bon exercice 😎🌈
