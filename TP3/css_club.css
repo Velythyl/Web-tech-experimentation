@@ -4,20 +4,28 @@
     --main-color: #9E9E9E;
 }
 
-#login-dialog {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1em;
+body {
+    margin: 0;
+}
 
+#login-dialog {
     width: 20%;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
+    background-color: white;
+
     border: var(--border-size) solid #9E9E9E;
     border-radius: 1em;
     padding: 1em;
+}
+
+#login-dialog > form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
 }
 
 #login-dialog > div {
@@ -25,8 +33,6 @@
 }
 
 .input-submit {
-    grid-column-start: 1;
-    grid-column-end: 3;
     background-color: var(--accent-color);
     padding: 0.5em;
     border: var(--border-size) solid transparent;
@@ -44,3 +50,20 @@
     border-bottom: thin solid var(--accent-color);
     text-align: center;
 }
+
+.grid-full {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.horizontal-divider {
+    border-bottom: var(--border-size) solid var(--main-color);
+    margin: 1em var(--border-size);
+}
+
+.vertical-divider {
+    border-right: var(--border-size) solid var(--main-color);
+    height: 100%;
+    width: 0;
+}
+
