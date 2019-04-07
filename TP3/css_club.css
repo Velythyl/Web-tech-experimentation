@@ -20,9 +20,11 @@ body {
     border: var(--border-size) solid #9E9E9E;
     border-radius: 1em;
     padding: 1em;
+
+    text-align: center;
 }
 
-#login-dialog > form {
+#login-dialog > form, #login-dialog > div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1em;
@@ -67,3 +69,8 @@ body {
     width: 0;
 }
 
+a {
+    text-decoration: none;
+    text-align: center;
+    color: black;
+}

@@ -1,20 +1,24 @@
 $(document).ready(function () {
+    $(".error").hide();
+
     $("#login-user").click(function () {
-        loginUser("test", "allo");
+        loginUser($("#login-uname").val(), $("#login-pwd").val());
+            return false;
+    });
+
+    $("#login-user").submit(function () {
+        e.preventDefault();
+        return false;
+    });
+
+    $("form").submit(function(){
+        return false;
     });
 });
 
-function loginUser(uname, mdp) {
-    $.post(                             //call the server
-        "http://localhost/club_login.php",                     //At this url
-        {
-            login: uname,
-            password: mdp
-        }                               //And send this data to it
-    ).done(                             //And when it's done
-        function(data)
-        {
-            $('#fromAjax').html(data);  //Update here with the response
-        }
-    );
+function loginUser(pseudo, pass) {
+    $.post('club.php', {query: "login", uname: pseudo, pwd: pass}, function(result) {
+        if(result === "FAILURE") $(".error").show();
+        else $('#login-dialog').html(result);
+    });
 }
