@@ -1,0 +1,4 @@
+https://www.a2hosting.ca/kb/developer-corner/mysql/managing-mysql-databases-and-users-from-the-command-line
+
+http://localhost/phpmyadmin/server_sql.php?lang=en
+
