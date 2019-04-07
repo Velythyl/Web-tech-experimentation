@@ -2,9 +2,25 @@ USE gautchar_IFT3225TP3;
 
 /* select login('Antonio500', 'HVA90YJU7'); */
 CREATE FUNCTION login (uname VARCHAR(255), mdp VARCHAR(255))
+RETURNS INTEGER
+READS SQL DATA
+RETURN
+(
+    SELECT ID FROM Individu WHERE login=uname AND mot_de_passe=mdp
+);
+
+CREATE FUNCTION is_admin (ID INTEGER)
 RETURNS BINARY
 READS SQL DATA
 RETURN
 (
-    SELECT(EXISTS(SELECT 1 FROM Individu WHERE login='Antonio500' AND mot_de_passe='HVA90YJIU7'))
+    SELECT(EXISTS(SELECT 1 FROM Gestionnaire WHERE ID=Gestionnaire.ID))
+);
+
+CREATE FUNCTION is_player (ID INTEGER)
+RETURNS BINARY
+READS SQL DATA
+RETURN
+(
+    SELECT(EXISTS(SELECT 1 FROM Joueur WHERE ID=Joueur.ID))
 );
