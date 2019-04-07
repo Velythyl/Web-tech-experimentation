@@ -28,8 +28,8 @@ from datetime import date, timedelta
 
 r_dates = []
 
-d1 = date(2019, 4, 1)  # start date
-d2 = date(2019, 8, 10)  # end date
+d1 = date(2018, 4, 1)  # start date
+d2 = date(2019, 4, 1)  # end date
 
 delta = d2 - d1         # timedelta
 
