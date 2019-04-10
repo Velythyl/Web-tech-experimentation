@@ -106,7 +106,7 @@ nav > a {
 
 #player-view > form {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1em;
 }
 
@@ -122,6 +122,14 @@ nav > a {
 
 .button-holder {
     display: grid;
-    grid-auto-columns: auto;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 1em;
+}
+
+nav {
+    z-index: 29;
+}
+
+.under {
+    z-index: 1;
 }

@@ -60,9 +60,8 @@ if(isset($_SESSION['ID'])) {
     if(!empty($_GET)) {
 
 
-    } else navgationLinks();
-}
-if (!empty($_POST)) {
+    } //else navgationLinks();
+} else if (!empty($_POST)) {
     $conn = configAndConnect();
 
     /* https://www.php.net/manual/fr/mysqli.query.php */
@@ -86,7 +85,18 @@ if (!empty($_POST)) {
 
     $_SESSION["admin"] = $result->fetch_assoc()["IS_IT"];
 
-    navgationLinks();
+    if(isset($_POST["admin"])) {
+        $_SESSION["as_admin"] = $_POST["admin"];
+
+        if(($_SESSION["as_admin"]=="true" && $_SESSION["admin"]==0) || (!$_SESSION["as_admin"]=="false" && $_SESSION["player"]==0)) {
+            echo "FAILURE";
+            exit();
+        }
+    } else {
+        $_SESSION["as_admin"] = false;
+    }
+
+    //navgationLinks();
 
     exit();
 }
@@ -118,7 +128,8 @@ aaaaagagaaaa
             <form>
                 <div>Pseudonyme: </div><input class="input-text" id="login-uname" type="text" placeholder="Pseudonyme" pattern=".{1,255}" title="Doit contenir moins de 255 caractères" required>
                 <div>Mot de passe: </div><input class="input-text" id="login-pwd" type="password" placeholder="Mot de passe" pattern=".{1,255}" title="Doit contenir moins de 255 caractères" required>
-                <input class="input-submit grid-full" type="submit" id="login-user" value="Se connecter" required>
+                <input class="input-submit" type="submit" id="login-player" value="Joueur" required>
+                <input class="input-submit" type="submit" id="login-admin" value="Admin" required>
             </form>
             <div class="horizontal-divider grid-full"></div>
             <form>
@@ -132,7 +143,7 @@ aaaaagagaaaa
             <span class="error-span error">Erreur de connection</span>
         </div>
         <div id="view-wrap">
-            <div id="player-view" class="centered pretty">
+            <div id="player-view" class="centered pretty under">
                 <form>
                     <input type="date" name="date"/>
                     <select name="terrain">
@@ -161,16 +172,20 @@ aaaaagagaaaa
                         <option value="19">19</option>
                         <option value="20">20</option>
                     </select>
+                    <input class="input-submit" type="submit" id="player-search" value="Chercher" required>
                 </form>
                 <div id="player-display">
+                    <?php
 
+
+                    ?>
                 </div>
                 <div class="button-holder">
-                    <input type="button" class="input-submit" value="Réserver cette heure"/>
+                    <input type="button" class="input-submit" value="Réserver cette  heure"/>
                     <input type="button" class="input-submit" value="Enlever cette réservation"/>
                 </div>
             </div>
-            <div id="admin-view" class="centered pretty">
+            <div id="admin-view" class="centered pretty under">
 
             </div>
         </div>
