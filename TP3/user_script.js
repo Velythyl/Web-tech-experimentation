@@ -1,3 +1,5 @@
+var selected;
+
 $(document).ready(function () {
 
     $(".error").hide();
@@ -55,19 +57,52 @@ $(document).ready(function () {
         });
     });
 
-    $("#player-view").hide();
+    $("#query-view").hide();
 
     $("#admin-view").hide();
 
     $("#player-search").click(function () {
         playerQuery();
     });
-
-
+    
     $.post('backend.php', {query: "state"}, function(result) {
         if(result!=="none") {
             login(result);
         }
+    });
+    
+    $(".line > div").click(function () {
+        selected = $(this).attr("id");
+    });
+
+    $("#reserver").click(function () {
+        let arr = selected.split(":");
+        const terrai = arr[0];
+        const jour = arr[1];
+        const heure = arr[2];
+
+        $.get('backend.php', {query: "reserve", terrain: terrai, day: jour, hour: heure}, function(result) {
+            if(result === "FAILURE") alert("Reservation failure");
+            else reload();
+        });
+
+        e.preventDefault();
+        return false;
+    });
+
+    $("#enlever").click(function () {
+        let arr = selected.split(":");
+        const terrai = arr[0];
+        const jour = arr[1];
+        const heure = arr[2];
+
+        $.get('backend.php', {query: "unreserve", terrain: terrai, day: jour, hour: heure}, function(result) {
+            if(result === "FAILURE") alert("Annulation failure");
+            else reload();
+        });
+
+        e.preventDefault();
+        return false;
     })
 });
 
@@ -97,19 +132,25 @@ function login(is_admin) {
     if(log) {
         $("#admin-view").show();
     } else {
-        $("#player-view").show();
+        $("#query-view").show();
     }
+
+    //reload();
+}
+
+function reload() {
+    window.location.reload(true);
 }
 
 function logout() {
     $("nav > a").hide();
-    window.location.reload(true);
+    reload();
 }
 
 function playerQuery() {
-    var dat = $('#player-view > form > [name="date"]').val();
-    var terrai = $('#player-view > form > [name="terrain"]').val();
-    var heur = $('#player-view > form > [name="heure"]').val();
+    var dat = $('#query-view > form > [name="date"]').val();
+    var terrai = $('#query-view > form > [name="terrain"]').val();
+    var heur = $('#query-view > form > [name="heure"]').val();
 
     if(dat === null || dat==="") {
         var today = new Date();
@@ -128,6 +169,6 @@ function playerQuery() {
     }
 
     $.get('backend.php', {query: "playerQuery", date: dat, terrain: terrai, heure: heur}, function (result) {
-        $("#player-display").html(result);
+        $("#query-display").html(result);
     })
 }

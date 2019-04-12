@@ -101,23 +101,28 @@ nav > a {
     position: fixed;
 
     width: 90%;
-    height: 90%;
 }
 
-#player-view > form {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1em;
+#query-view > form {
+    display: flex;
+    flex-direction: row;
 }
 
-#player-view {
+#query-view > form > input, #query-view > form > select {
+    flex: 1;
+}
+
+#query-view {
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-gap: 1em;
 }
 
-#player-display {
+
+#query-display {
     height: calc(100% - var(--border-size) - 0.5em );
+    display: flex;
+    flex-direction: column;
 }
 
 .button-holder {
@@ -133,3 +138,24 @@ nav {
 .under {
     z-index: 1;
 }
+
+/* AUTEURE 3M */
+.line {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.line > div {
+    flex: 1;
+    text-align: center;
+}
+
+.line > div:hover {
+    background-color: var( --accent-color);
+}
+
+.line > div:focus{
+    background-color: var( --accent-color);
+}
+/* AUTEURE 3M END */

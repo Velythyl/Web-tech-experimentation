@@ -60,6 +60,27 @@ function navgationLinks() {
     echo "<div>".$player_button.$admin_button."</div>";
 }
 
+function handleGet($conn) {
+    switch ($_GET['query']) {
+        case 'reserve':
+            $result = $conn->query("call reserve (".$_GET['terrain'].", '".$_GET['day']."', ".$_GET['hour'].", ".$_SESSION["ID"].")") or die($conn->error);
+
+            return $result->fetch_row()[0];
+        case 'unreserve':
+            $result = $conn->query("call unreserve (".$_GET['terrain'].", '".$_GET['day']."', ".$_GET['hour'].", ".$_SESSION["ID"].")") or die($conn->error);
+
+            return $result->fetch_row()[0];
+        case 'logout':
+            session_destroy();
+            $_SESSION = [];
+            echo "SUCCESS";
+            exit();
+        case 'state':
+            if(isset($_SESSION) && isset($_SESSION["as_admin"])) echo $_SESSION["as_admin"];
+            else echo "none";
+            exit();
+    }
+}
 
 session_start();
 
@@ -101,6 +122,14 @@ if (!empty($_POST)) {
     //navgationLinks();
 
     exit();
+} elseif(!empty($_GET)) {
+    $conn = configAndConnect();
+
+    $value = handleGet($conn);
+
+    echo $value;
+
+
 }
 
 ?>
