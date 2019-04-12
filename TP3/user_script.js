@@ -32,28 +32,25 @@ $(document).ready(function () {
         return false;
     });
 
-    $("form").submit(function(){
-        return false;
-    });
 
     $("nav > a").hide();
 
     $("nav > a").click(function () {
-        $.post('club.php', {query: "logout"}, function(result) {
+        $.post('backend.php', {query: "logout"}, function(result) {
             if(result === "FAILURE") $(".error").show();
             else logout();
         });
     });
 
     $("#goto-player-view").click(function () {
-        $.get('club.php', {query: "gotoPlayerView"}, function(result) {
+        $.get('backend.php', {query: "gotoPlayerView"}, function(result) {
             if(result === "FAILURE") $(".error").show();
             else logout();
         });
     });
 
     $("#goto-admin-view").click(function () {
-        $.get('club.php', {query: "gotoAdminView"}, function(result) {
+        $.get('backend.php', {query: "gotoAdminView"}, function(result) {
 
         });
     });
@@ -63,30 +60,45 @@ $(document).ready(function () {
     $("#admin-view").hide();
 
     $("#player-search").click(function () {
-        
+        playerQuery();
     });
+
+
+    $.post('backend.php', {query: "state"}, function(result) {
+        if(result!=="none") {
+            login(result);
+        }
+    })
 });
 
 function loginUser(pseudo, pass, is_admin) {
-    $.post('club.php', {query: "login", uname: pseudo, pwd: pass, admin: is_admin}, function(result) {
+    $.post('backend.php', {query: "login", uname: pseudo, pwd: pass, admin: is_admin}, function(result) {
         if(result === "FAILURE") $(".error").show();
         else login(is_admin);
     });
 }
 
 function createUser(name, fname, pass, pseudo) {
-    $.post('club.php', {query: "create", uname: pseudo, pwd: pass, nom: name, prenom: fname}, function(result) {
+    $.post('backend.php', {query: "create", uname: pseudo, pwd: pass, nom: name, prenom: fname}, function(result) {
         if(result === "FAILURE") $(".error").show();
         else login(false);
     });
 }
 
 function login(is_admin) {
+    var log = false
+    if(is_admin instanceof String) {
+        log = (is_admin === "true");
+    }
+
     $('#login-dialog').hide();
     $("nav > a").show();
 
-    if(is_admin) $("#admin-view").show();
-    else $("#player-view").show();
+    if(log) {
+        $("#admin-view").show();
+    } else {
+        $("#player-view").show();
+    }
 }
 
 function logout() {
@@ -94,9 +106,12 @@ function logout() {
     window.location.reload(true);
 }
 
-function playerQuery(dat, terrai, heur) {
+function playerQuery() {
+    var dat = $('#player-view > form > [name="date"]').val();
+    var terrai = $('#player-view > form > [name="terrain"]').val();
+    var heur = $('#player-view > form > [name="heure"]').val();
 
-    if(dat === null) {
+    if(dat === null || dat==="") {
         var today = new Date();
         var tomorrow = new Date();
         tomorrow.setDate(today.getDate()+1);
@@ -104,15 +119,15 @@ function playerQuery(dat, terrai, heur) {
         dat=""+tomorrow.getFullYear()+"-"+(1+tomorrow.getMonth())+"-"+tomorrow.getDay();
     }
 
-    if(terrai === null) {
+    if(terrai === null || terrai==="") {
         terrai = "all";
     }
 
-    if(heur === null) {
+    if(heur === null || heur==="") {
         heur = "all";
     }
 
-    $.get('club.php', {query: "playerQuery", date: dat, terrain: terrai, heure: heur}, function (result) {
+    $.get('backend.php', {query: "playerQuery", date: dat, terrain: terrai, heure: heur}, function (result) {
         $("#player-display").html(result);
     })
 }
