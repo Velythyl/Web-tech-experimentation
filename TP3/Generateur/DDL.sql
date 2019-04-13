@@ -30,12 +30,17 @@ CREATE TABLE Gestionnaire (
     FOREIGN KEY(ID) REFERENCES Individu(ID)
 );
 
+CREATE TABLE Terrain (
+    ID INT NOT NULL PRIMARY KEY
+);
+
 CREATE TABLE Reservation (
 	T_ID INT,
 	R_date DATE NOT NULL,
     Heure TINYINT NOT NULL,
     J_ID INT NOT NULL,
-    FOREIGN KEY(J_ID) REFERENCES Individu(ID),
+    FOREIGN KEY(J_ID) REFERENCES Joueur(ID),
+	FOREIGN KEY(T_ID) REFERENCES Terrain(ID),
     CONSTRAINT def_heures CHECK (Heure >= 6 AND Heure <= 20),
     PRIMARY KEY (T_ID, R_date, Heure)
 );

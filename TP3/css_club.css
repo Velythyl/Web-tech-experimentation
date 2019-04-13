@@ -36,7 +36,7 @@ body {
 }
 
 .pretty {
-    border: var(--border-size) solid #9E9E9E;
+    border: var(--border-size) solid var( --main-color);
     border-radius: 1em;
     padding: 1em;
 
@@ -113,7 +113,7 @@ nav > a {
 }
 
 #view-wrap {
-    margin-top: 5%;
+    margin-top: 2.5vw;
 
     display: flex;
     flex-direction: column;
@@ -170,7 +170,7 @@ nav {
     align-items: center;
 }
 
-#player-display {
+.player-display {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: stretch;
@@ -200,15 +200,15 @@ nav {
     border: thin solid var( --main-color);
 }
 
-#player-display div {
+.player-display div {
     text-align: center;
 }
 
-#player-display > div {
+.player-display > div {
     display: contents;
 }
 
-#player-display > .selectable:hover div {
+.player-display > .user-row:hover div {
     background-color: var( --accent-color);
 }
 

@@ -1,21 +1,8 @@
 <?php
 
-function configAndConnect() {
-    /* https://www.cloudways.com/blog/connect-mysql-with-php/    */
+/* pas de <?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1)); ?> car on ne veut pas afficher la source */
 
-    $dbhost = "localhost";
-    $dbuser = "gautchar";
-    $dbpass = "mdp1234";
-    $db = "gautchar_IFT3225TP3";
-
-    $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
-
-    return $conn;
-}
-
-function close($conn) {
-    $conn -> close();
-}
+include "db.php";
 
 function handlePost($conn) {
     switch ($_POST['query']) {
@@ -24,7 +11,7 @@ function handlePost($conn) {
 
             $ID = $result->fetch_assoc()["ID"];
 
-            if($ID==="" || $ID===NULL || $result->num_rows === 0) throw new Exception("pas conect");
+            if($ID==="" || $ID===NULL || $result->num_rows === 0 || $ID==="NULL") throw new Exception("pas conect");
 
             return $ID;
         case 'create':
@@ -35,7 +22,7 @@ function handlePost($conn) {
 
             $ID = $result->fetch_assoc()["ID"];
 
-            if($ID==="" || $ID===NULL || $result->num_rows === 0) throw new Exception("pas conect");
+            if($ID==="" || $ID===NULL || $result->num_rows === 0 || $ID==="NULL") throw new Exception("pas conect");
 
             return $ID;
         case 'logout':
@@ -70,15 +57,6 @@ function handleGet($conn) {
             $result = $conn->query("call unreserve (".$_GET['terrain'].", '".$_GET['day']."', ".$_GET['hour'].", ".$_SESSION["ID"].")") or die($conn->error);
 
             return $result->fetch_row()[0];
-        case 'logout':
-            session_destroy();
-            $_SESSION = [];
-            echo "SUCCESS";
-            exit();
-        case 'state':
-            if(isset($_SESSION) && isset($_SESSION["as_admin"])) echo $_SESSION["as_admin"];
-            else echo "none";
-            exit();
     }
 }
 
@@ -123,13 +101,21 @@ if (!empty($_POST)) {
 
     exit();
 } elseif(!empty($_GET)) {
-    $conn = configAndConnect();
+    if($_SESSION['as_admin'] === 'true') {
+        echo "FAILURE";
+    } else {
+        $conn = configAndConnect();
 
-    $value = handleGet($conn);
+        $value = handleGet($conn);
 
-    echo $value;
-
-
+        echo $value;
+    }
 }
+
+?>
+
+<?php
+
+close($conn);
 
 ?>

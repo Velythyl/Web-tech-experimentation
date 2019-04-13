@@ -15,3 +15,23 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+dt::after {
+    content: ":";
+}
+
+dt + dd::before {
+    content: ">";
+}
+
+dt + dd + dd::before {
+    content: "⚽";
+}
+
+dt + dd + dd + dd::before {
+    content: "🖋️";
+}
+
+.sql {
+    color: #FF5252;
+}
