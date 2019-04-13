@@ -2,6 +2,7 @@
     --border-size: 0.25em;
     --accent-color: #FF5252;
     --main-color: #9E9E9E;
+    --half-accent-color: #FF525288;
 }
 
 body {
@@ -14,13 +15,22 @@ body {
     transform: translate(-50%, -50%);
 }
 
+#login-wrap {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: white;
+
+    z-index: 1;
+}
+
 #login-dialog {
     width: 20%;
     position: fixed;
 
     background-color: white;
 
-    z-index: 30;
+
 
     text-align: center;
 }
@@ -29,6 +39,8 @@ body {
     border: var(--border-size) solid #9E9E9E;
     border-radius: 1em;
     padding: 1em;
+
+    text-align: center;
 }
 
 #login-dialog > form, #login-dialog > div {
@@ -61,8 +73,7 @@ body {
 }
 
 .grid-full {
-    grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column: 1/-1;
 }
 
 .horizontal-divider {
@@ -87,42 +98,55 @@ nav {
 }
 
 nav > a {
-    float: right;
+    z-index: 31;
+    position: fixed;
+    left: 100%;
+    transform: translateX(-100%);
+}
+
+#hidey {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 20;
 }
 
 #view-wrap {
-    width: 100%;
-    height: 100%;
+    margin-top: 5%;
 
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    width: 100%;
+
+    z-index: 30;
 }
 
 #view-wrap > div {
-    position: fixed;
-
-    width: 90%;
-}
-
-#query-view > form {
-    display: flex;
-    flex-direction: row;
-}
-
-#query-view > form > input, #query-view > form > select {
+    position: relative;
     flex: 1;
+    width: 90%;
+
+    z-index: 30;
 }
 
-#query-view {
+#terrain-form {
+    display: grid;
+}
+
+label {
+    display: block;
+}
+
+.view {
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-gap: 1em;
-}
-
-
-#query-display {
-    height: calc(100% - var(--border-size) - 0.5em );
-    display: flex;
-    flex-direction: column;
 }
 
 .button-holder {
@@ -135,27 +159,82 @@ nav {
     z-index: 29;
 }
 
-.under {
-    z-index: 1;
-}
+/* https://stackoverflow.com/questions/45536537/centering-in-css-grid */
+.display > div {
+    text-align: center;
 
-/* AUTEURE 3M */
-.line {
+    overflow: hidden;
+
     display: flex;
-    flex-direction: row;
-    flex: 1;
+    justify-content: center;
+    align-items: center;
 }
 
-.line > div {
-    flex: 1;
+#player-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: stretch;
+}
+
+.selectable:hover {
+    background-color: var( --accent-color);
+
+    /* https://stackoverflow.com/questions/34833815/showing-truncated-text-on-hover-using-css-ellipsis-overlaps-text-below-it */
+    overflow: visible;
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.selectable:focus{
+    background-color: var( --accent-color);
+
+    /* https://stackoverflow.com/questions/34833815/showing-truncated-text-on-hover-using-css-ellipsis-overlaps-text-below-it */
+    overflow: visible;
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.selectable {
+    border: thin solid var( --main-color);
+}
+
+#player-display div {
     text-align: center;
 }
 
-.line > div:hover {
+#player-display > div {
+    display: contents;
+}
+
+#player-display > .selectable:hover div {
     background-color: var( --accent-color);
 }
 
-.line > div:focus{
+.accent {
     background-color: var( --accent-color);
 }
-/* AUTEURE 3M END */
+
+:focus {
+    outline-color: transparent;
+    outline-style: none;
+}
+
+.Taken {
+    background-color: #212121;
+    color: white;
+}
+
+.You {
+    background-color: var( --half-accent-color);
+}
+
+.middle {
+    border-right: thin solid var( --main-color);
+    border-left: thin solid var( --main-color);
+}
+
+.top {
+    border-bottom: thin solid var( --main-color);;
+}

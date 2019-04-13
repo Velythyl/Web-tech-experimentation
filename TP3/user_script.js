@@ -34,46 +34,24 @@ $(document).ready(function () {
         return false;
     });
 
-
-    $("nav > a").hide();
-
     $("nav > a").click(function () {
         $.post('backend.php', {query: "logout"}, function(result) {
             if(result === "FAILURE") $(".error").show();
             else logout();
         });
     });
-
-    $("#goto-player-view").click(function () {
-        $.get('backend.php', {query: "gotoPlayerView"}, function(result) {
-            if(result === "FAILURE") $(".error").show();
-            else logout();
-        });
-    });
-
-    $("#goto-admin-view").click(function () {
-        $.get('backend.php', {query: "gotoAdminView"}, function(result) {
-
-        });
-    });
-
-    $("#query-view").hide();
-
-    $("#admin-view").hide();
-
-    $("#player-search").click(function () {
-        playerQuery();
-    });
     
     $.post('backend.php', {query: "state"}, function(result) {
         if(result!=="none") {
-            login(result);
-        }
+            showViews();
+        } else $("#login-wrap").css('z-index', 3000);
     });
     
-    $(".line > div").click(function () {
+    $(".selectable").click(function () {
         selected = $(this).attr("id");
     });
+
+    $("#res-error").hide();
 
     $("#reserver").click(function () {
         let arr = selected.split(":");
@@ -82,8 +60,10 @@ $(document).ready(function () {
         const heure = arr[2];
 
         $.get('backend.php', {query: "reserve", terrain: terrai, day: jour, hour: heure}, function(result) {
-            if(result === "FAILURE") alert("Reservation failure");
-            else reload();
+            if(result === "FAILURE") {
+                $("#res-error").html("Error: you can only book a field for tomorrow, or the field is already booked");
+                $("#res-error").show();
+            } else reload();
         });
 
         e.preventDefault();
@@ -97,45 +77,50 @@ $(document).ready(function () {
         const heure = arr[2];
 
         $.get('backend.php', {query: "unreserve", terrain: terrai, day: jour, hour: heure}, function(result) {
-            if(result === "FAILURE") alert("Annulation failure");
-            else reload();
+            if(result === "FAILURE") {
+                $("#res-error").html("Error: you can only cancel one of your own reservations that haven't already been passed");
+                $("#res-error").show();
+            } else reload();
         });
 
         e.preventDefault();
         return false;
+    });
+
+    $(".user-row > div").click(function () {
+        $(".accent").attr("class","");
+        $(this).attr("class","accent");
+        $(this).siblings().attr("class","accent");
     })
 });
 
 function loginUser(pseudo, pass, is_admin) {
     $.post('backend.php', {query: "login", uname: pseudo, pwd: pass, admin: is_admin}, function(result) {
         if(result === "FAILURE") $(".error").show();
-        else login(is_admin);
+        else login();
     });
 }
 
 function createUser(name, fname, pass, pseudo) {
     $.post('backend.php', {query: "create", uname: pseudo, pwd: pass, nom: name, prenom: fname}, function(result) {
         if(result === "FAILURE") $(".error").show();
-        else login(false);
+        else login();
     });
 }
 
-function login(is_admin) {
-    var log = false
-    if(is_admin instanceof String) {
-        log = (is_admin === "true");
-    }
+function showViews() {
 
-    $('#login-dialog').hide();
-    $("nav > a").show();
+    $('#login-wrap').css('z-index', 1);
+}
 
-    if(log) {
-        $("#admin-view").show();
-    } else {
-        $("#query-view").show();
-    }
+function login() {
+    var today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(today.getDate()+1);
 
-    //reload();
+    window.location.href = 'club.php?date=&terrain=all&heureLo=all&heureHi=all';
+
+    showViews();
 }
 
 function reload() {
@@ -145,30 +130,4 @@ function reload() {
 function logout() {
     $("nav > a").hide();
     reload();
-}
-
-function playerQuery() {
-    var dat = $('#query-view > form > [name="date"]').val();
-    var terrai = $('#query-view > form > [name="terrain"]').val();
-    var heur = $('#query-view > form > [name="heure"]').val();
-
-    if(dat === null || dat==="") {
-        var today = new Date();
-        var tomorrow = new Date();
-        tomorrow.setDate(today.getDate()+1);
-
-        dat=""+tomorrow.getFullYear()+"-"+(1+tomorrow.getMonth())+"-"+tomorrow.getDay();
-    }
-
-    if(terrai === null || terrai==="") {
-        terrai = "all";
-    }
-
-    if(heur === null || heur==="") {
-        heur = "all";
-    }
-
-    $.get('backend.php', {query: "playerQuery", date: dat, terrain: terrai, heure: heur}, function (result) {
-        $("#query-display").html(result);
-    })
 }

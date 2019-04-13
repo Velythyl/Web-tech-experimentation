@@ -114,3 +114,11 @@ BEGIN
 END;
 $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE all_users()
+BEGIN
+	SELECT login, nom, prenom FROM Individu, Joueur WHERE Individu.ID=Joueur.ID;	
+END;
+$$
+DELIMITER ;
