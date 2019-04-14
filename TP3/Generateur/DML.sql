@@ -77,14 +77,7 @@ BEGIN
 		SET x=x+1;
 	END WHILE;
 
-	CREATE TEMPORARY TABLE fieldTable (f INTEGER);
-	IF field='all' THEN
-		INSERT INTO fieldTable VALUES(1), (2), (3), (4), (5);
-	ELSE
-		INSERT INTO fieldTable VALUES(CAST(field AS UNSIGNED)); 
-	END IF;
-
-	SELECT f, h, used_by(f, day, h, player) as u FROM (SELECT * FROM fieldTable CROSS JOIN hourTable) AS temp ORDER BY f, h;
+	SELECT f, h, used_by(f, day, h, player) as u FROM (SELECT * FROM (SELECT ID as f FROM Terrain WHERE field='all' OR CAST(field AS UNSIGNED)=Terrain.ID) as t CROSS JOIN hourTable) AS temp ORDER BY f, h;
 		
 END;
 $$

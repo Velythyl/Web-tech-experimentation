@@ -6,8 +6,15 @@ include "db.php";
 
 session_start();
 
-$isAdmin = "false";
+$isAdmin = "false"; //sucre sémantique pour plus tard
 if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
+
+function getTomorrow() {
+    $datetime = new DateTime('tomorrow', new DateTimeZone('America/Toronto'));
+    $day = $datetime->format('Y-m-d');
+    return $day;
+}
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,46 +60,44 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
         <div id="hidey"></div>
         <div id="view-wrap" class="">
             <div class="pretty view">
-                <form id="terrain-form" action="club.php" method="get" style="grid-template-columns: repeat(<?php   if($isAdmin==="true") echo '4';
+                <form id="terrain-form" action="club.php" method="get" style="grid-template-columns: repeat(<?php /* on ajuste la grosseur de la grille */  if($isAdmin==="true") echo '4';
                                                                                                                     else echo '3'?>, 1fr)">
 
-                        <label for="date">Date</label>
-                        <label for="terrain">Field</label>
-                        <label for="heureLo"><?php  if($isAdmin === "true") echo "From";
-                                                    else echo "Hour"; ?></label>
-                        <?php if($isAdmin === "true") echo '<label for="heureHi">To</label>'; ?>
-                        <input type="date"
-                               <?php
-                               if(isset($_GET['date'])) {
+                    <!-- chacun des select et input se fait changer sa valeur par defaut selon le GET en ce moment -->
+                    <label for="date">Date</label>
+                    <label for="terrain">Field</label>
+                    <label for="heureLo"><?php /*on ajuste selon si on est un admin ou pas */ if($isAdmin === "true") echo "From";
+                                                else echo "Hour"; ?></label>
+                    <?php /* si on est un admin on a besoin d'un label de plus */ if($isAdmin === "true") echo '<label for="heureHi">To</label>'; ?>
+                    <input type="date"
+                           <?php
+                           /* si la date n'est pas set, on prend celle de demain */
+                           if(isset($_GET['date'])) {
 
-                                   $day = $_GET['date'];
-                                   if($day === '') {
-                                       $datetime = new DateTime('tomorrow');
-                                       $day = $datetime->format('Y-m-d');
-                                   }
+                               $day = $_GET['date'];
+                               if($day === '') $day = getTomorrow();
 
-                                   echo 'value="'.$day.'"';
-                               }
-                               else {
-                                   $datetime = new DateTime('tomorrow');
-                                   echo $datetime->format('Y-m-d');
-                               }
-                               ?>
-                        name="date"/>
-                        <select name="terrain">
-                            <?php
-                            if(isset($_GET) && isset($_GET['terrain'])) echo '<option value="'.$_GET['terrain'].'" selected>'.$_GET['terrain'].'</option>';
-                            ?>
-                            <option value="all">all</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                               echo 'value="'.$day.'"';
+
+                           } else echo getTomorrow();
+
+                           ?>
+                    name="date"/>
+
+                    <select name="terrain">
+                        <?php
+                        if(isset($_GET) && isset($_GET['terrain'])) echo '<option value="'.$_GET['terrain'].'" selected>'.$_GET['terrain'].'</option>';
+                        ?>
+                        <option value="all">all</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
 
                     <select name="heureLo">
-                        <?php
+                        <?php /* si on a une des deux heures à "all" on met les deux à "all" */
                         if(isset($_GET) && isset($_GET['heureLo'])) {
                             if(isset($_GET['heureHi']) && $_GET['heureHi']==='all') echo '<option value="'.$_GET['heureHi'].'" selected>'.$_GET['heureHi'].'</option>';
                             else echo '<option value="'.$_GET['heureLo'].'" selected>'.$_GET['heureLo'].'</option>';
@@ -115,7 +120,8 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
                         <option value="19">19</option>
                         <option value="20">20</option>
                     </select>
-                    <?php
+                    <?php /* si on a une des deux heures à "all" on met les deux à "all". Aussi, ce select n'est que
+                            pour les admin*/
                     if($isAdmin === "true") {
                         $ech = '<select name="heureHi">';
                         if(isset($_GET) && isset($_GET['heureHi'])) {
@@ -148,20 +154,21 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
                 </form>
 
                     <?php
+                    /*
+                     * Crée la grille
+                     */
                     if(isset($_GET)) {
-                        if(!isset($_SESSION["as_admin"])) echo "Querying...";
-                        //elseif ($_SESSION["as_admin"]==="true") echo "ERREUR";
+                        if(!isset($_SESSION["as_admin"])) echo "Querying...";   //message d'erreur temporaire
                         elseif(isset($_GET["date"])) {
-                            //echo "test";
 
                             $conn = configAndConnect();
 
                             $DATE = $_GET["date"];
-                            if($DATE==="") {
-                                $datetime = new DateTime('tomorrow');
-                                $DATE = $datetime->format('Y-m-d');
-                            } //https://www.w3schools.com/php/php_date.asp
+                            if($DATE==="") $DATE=getTomorrow(); //prend demain si pas fait
 
+                            /*
+                             * On s'assure que si une des heures est "all", on cherche pour "all" peu importe
+                             */
                             $heureLo = $_GET["heureLo"];
 
                             if(isset($_GET["heureHi"]) && $isAdmin==="true") $heureHi = $_GET["heureHi"];
@@ -171,10 +178,14 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
                                 $heureHi = 20;
                             }
 
+                            //fait la requete
                             $result = $conn->query("CALL all_on_day('".$DATE."', ".$heureLo.", ".$heureHi.", '".$_GET["terrain"]."', '".($isAdmin === 'false'? $_SESSION["ID"] : 'admin')."')") or die($conn->error);
 
                             close($conn);
 
+                            /*
+                             * header est titre de la grille
+                             */
                             $header = "<div class='grid-full'>On $DATE</div><div>#T</div>";
                             for($counter = $heureLo; $counter <= $heureHi; $counter++) {
                                 $header = $header."<div>$counter</div>";
@@ -183,32 +194,33 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
                             $grid = "";
                             $line = "";
                             $oldF = "";
-                            while ($row = $result->fetch_row()){
+                            while ($row = $result->fetch_row()){    //pour chaque row de la réponse
 
-                                $f = $row[0];
+                                $f = $row[0];                       //on prend l'identifiant de terrain
 
-                                if($f != $oldF) {
-                                    $grid = $grid.$line;
+                                if($f != $oldF) {                   //si c'est la première fois qu'on le voit
+                                    $grid = $grid.$line;            //on sauve la ligne précédente et on en fait une nouvelle
                                     $line = "<div>$f</div><div class='selectable $row[2]' tabindex='1' id='$row[0]:$DATE:$row[1]'>$row[2]</div>";
-
+                                                                    //sinon, on met un nouvel élément de disponibilité
                                 } else $line = $line."<div class='selectable $row[2]' tabindex='1' id='$row[0]:$DATE:$row[1]'>$row[2]</div>";
 
-                                $oldF = $f;
+                                $oldF = $f;                         //on se rappelle de la ligne précédente
                             }
 
-                            $nbCol = 2 + ($heureHi-$heureLo);
-                            $nbLin = 1;
-                            if($_GET['terrain'] === 'all') $nbLin = 5;
+                            $nbCol = 2 + ($heureHi-$heureLo);       //nb de colonnes est heureHi - heureLo, mais inclusif + le #t
 
                             $center = "";
                             if($isAdmin === "false") $center = " center";
-
+                            //on ajuste le css-grid dépendemment du input...
                             echo '<div class="display'.$center.'" style="display: grid; grid-template-columns: repeat('.$nbCol.', 1fr); grid-auto-rows: 1fr; align-items: stretch;">'.$header.$grid.$line."</div>";
                         }
                     }
                     ?>
 
                 <?php
+                /*
+                 * Si on est pas un admin on peut réserver et annuler
+                 */
                 if($isAdmin === "false") {
                     echo    '<div class="button-holder">
                                 <input id="reserver" type="button" class="input-submit" value="Book"/>
@@ -221,10 +233,10 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
                 ?>
             </div>
 
-
-
-            <!-- truc des users -->
             <?php
+            /*
+             * Si on est un admin, on fait la liste des joueurs
+             */
             if($isAdmin === "true") {
                 $ech = '<div class="pretty view">
                 <div class="player-display">
@@ -237,7 +249,7 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
 
                 close($conn);
 
-                while ($row = $result->fetch_row()){
+                while ($row = $result->fetch_row()){    //pour chaque row de réponse, on ajoute un élément dans la liste
                     $ech = $ech."<div class='user-row' tabindex='1'><div>$row[0]</div><div class='middle'>$row[1]</div><div>$row[2]</div></div>";
                 }
 
@@ -248,6 +260,9 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
             ?>
 
             <?php
+            /*
+             * Si on est un joueur, on fait la liste des réservations
+             */
             if($isAdmin === "false") {
                 $ech = '<div class="pretty view">
                 <div class="player-display">
@@ -260,7 +275,7 @@ if(isset($_SESSION['as_admin'])) $isAdmin = $_SESSION['as_admin'];
 
                 close($conn);
 
-                while ($row = $result->fetch_row()){
+                while ($row = $result->fetch_row()){    //pour chaque row de réponse on ajoute un élément à la liste
                     $ech = $ech."<div class='user-row' tabindex='1'><div>$row[0]</div><div class='middle'>$row[1]</div><div>$row[2]</div></div>";
                 }
 

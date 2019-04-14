@@ -4,9 +4,12 @@ $(document).ready(function () {
 
     $(".error").hide();
 
+    /*
+    Appelle la fonction de login d'usager avec les bons paramètres
+     */
     $("#login-player").click(function () {
         loginUser($("#login-uname").val(), $("#login-pwd").val(), false);
-            return false;
+        return false;
     });
 
     $("#login-player").submit(function () {
@@ -14,6 +17,9 @@ $(document).ready(function () {
         return false;
     });
 
+    /*
+    Appelle la fonction de login d'usager avec les bons paramètres
+     */
     $("#login-admin").click(function () {
         loginUser($("#login-uname").val(), $("#login-pwd").val(), true);
         return false;
@@ -29,30 +35,39 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#create-user").click(function () {
+    /*
+    Appelle la fonction de création d'usager avec les bons paramètres
+     */
+    $("#create-user").click(function (e) {
         createUser($("#create-name").val(), $("#create-fname").val(), $("#create-pwd").val(), $("#create-uname").val());
+        e.preventDefault();
         return false;
     });
 
+    /*
+    Logout: avec du error handling, mais ça ne devrait pas être utile
+     */
     $("nav > a").click(function () {
         $.post('backend.php', {query: "logout"}, function(result) {
             if(result === "FAILURE") $(".error").show();
-            else logout();
+            else reload();
         });
     });
-    
+
+    /*
+    Demande l'état du serveur pour savoir s'il y a eu une connection. Si non, on met le div de login par-dessus tous les
+    autres
+     */
     $.post('backend.php', {query: "state"}, function(result) {
-        if(result!=="none") {
-            showViews();
-        } else $("#login-wrap").css('z-index', 3000);
-    });
-    
-    $(".selectable").click(function () {
-        selected = $(this).attr("id");
+        if(result==="none") $("#login-wrap").css('z-index', 3000);
     });
 
     $("#res-error").hide();
 
+    /*
+    Les deux prochaines fonctions prennent le ID de l'élément sélectionné de la grille de forme #T:DATE:Heure et
+    l'utilisent pour opérer sur la réservation donc le ID est la clé primaire
+     */
     $("#reserver").click(function () {
         let arr = selected.split(":");
         const terrai = arr[0];
@@ -87,6 +102,9 @@ $(document).ready(function () {
         return false;
     });
 
+    /*
+    Permet la sélection d'items de grilles ou de listes
+     */
     $(".user-row > div").click(function () {
         $(".user-row > div").removeClass("accent");
         $(this).addClass("accent");
@@ -96,6 +114,7 @@ $(document).ready(function () {
     $(".selectable").click(function () {
         $(".selectable").removeClass("accent");
         $(this).addClass("accent");
+        selected = $(this).attr("id");
     })
 });
 
@@ -107,32 +126,23 @@ function loginUser(pseudo, pass, is_admin) {
 }
 
 function createUser(name, fname, pass, pseudo) {
-    $.post('backend.php', {query: "create", uname: pseudo, pwd: pass, nom: name, prenom: fname}, function(result) {
+    $.post('backend.php', {query: "create", uname: pseudo, pwd: pass, nom: name, prenom: fname, admin: "false"}, function(result) {
         if(result === "FAILURE") $(".error").show();
         else login();
     });
 }
 
-function showViews() {
-
-    $('#login-wrap').css('z-index', 1);
-}
-
+/*
+Lorsqu'on login on n'a qu'à rappeler la page club.php
+ */
 function login() {
-    var today = new Date();
-    var tomorrow = new Date();
-    tomorrow.setDate(today.getDate()+1);
-
+    //on appelle club.php avec une recherche de tous les terrains, toutes les heures, demain
     window.location.href = 'club.php?date=&terrain=all&heureLo=all&heureHi=all';
-
-    //showViews();
 }
 
+/*
+Recharge la page
+ */
 function reload() {
     window.location.reload(true);
-}
-
-function logout() {
-    $("nav > a").hide();
-    reload();
 }

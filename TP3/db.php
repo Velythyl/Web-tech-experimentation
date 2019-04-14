@@ -2,6 +2,9 @@
 
 /* pas de <?php if (isset($_GET['source'])) die(highlight_file(__FILE__, 1)); ?> car on ne veut pas afficher la source */
 
+/*
+ * Retourne une connection vers mysql
+ */
 function configAndConnect() {
     /* https://www.cloudways.com/blog/connect-mysql-with-php/    */
 
@@ -15,6 +18,9 @@ function configAndConnect() {
     return $conn;
 }
 
+/*
+ * ferme la connection vers mysql
+ */
 function close($conn) {
     $conn -> close();
 }
