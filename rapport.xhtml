@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+    <title>Rapport TP2</title>
+    <link rel="stylesheet" type="text/css" href="css_rapport.css"/>
+</head>
+<body>
+    <div id="nav">
+        <div>Lien vers le club:</div>
+        <a href="club.php">club.php</a>
+        <div>Sources php (en zip pour que vous puisssiez voir le code):</div>
+        <a href="PHP.zip">PHP.zip</a>
+        <div>Sources CSS:</div>
+        <div style="display: flex; flex-direction: row;">
+            <a style="flex: 1" href="css_club.css">css_club.css</a>
+            <a style="flex: 1" href="css_rapport.css">css_rapport.css</a>
+        </div>
+        <div>Source JS:</div>
+        <a href="script.js">script.js</a>
+        <div>Sources SQL:</div>
+        <a href="SQL.zip">SQL.zip</a>
+    </div>
+
+    <h3>Équipe</h3>
+    <ul>
+        <li>
+            Nom: Charlie Gauthier, matricule: 20105623
+        </li>
+        <li>
+            Nom: Maud Moerel-Martini, matricule: 20037754
+        </li>
+    </ul>
+
+    <p>
+        Dans ce document, on note ">" les définitions générales, "⚽" les informations propres à la page du joueur et
+        "🖋" les informations propres à la page de l'admin. Les éléments de <span class="sql">cette couleur</span>
+        référencent la section sur le SQL à la fin de ce document.
+    </p>
+
+    <p>
+        Pour se login: username Tandra441 avec le mot de passe 8ZA1DHDWCO est une Gestionnaire et Joueur. Malissa440 avec le
+        mot de passe B78TTOQBKE est Joueur. De plus, pour voir un jour ayant déjà des réservations, aller voir 2019-04-16.
+        Pour créer un compte, entrer les champs du bas du login et cliquer sur "Create account". Pour se logger dans un compte
+        existant, entrer les infos dans les champs du haut et cliquer "Player" si vous voulez vous logger en tant que Joueur et
+        "Admin" si vous voulez vous logger en tant qu'admin (le serveur gère les permissions).
+    </p>
+
+    <h3>Commentaires sur le HTML</h3>
+
+    <p>
+        On remarque deux grandes parties du HTML5 du club: le login et la page d'affichage des query ("le query"). À
+        l'aide du css, on a placé le query au dessus du login. Donc, lorsqu'on ouvre la page initialement, le query est
+        par-dessus le login: comme ça, lorsqu'on est connectés sur notre compte, on ne voit pas la page de login même si
+        on a rien eu besoin de faire avec le JS pour cacher cette dernière. Autremenent dit, l'état "naturel" de la page
+        est celui dans lequel on est connectés. Dans l'état contraire, on place le login par-dessus le query, et on a
+        qu'à le remettre en-dessous une fois que c'est fait (voir "state" dans la section "Commentaires sur le code").
+        Tout est facilement géré avec le z-index.
+    </p>
+
+    <p>
+        Le login comprends deux parties. La partie du haut permet à un usager de se connecter à l'aide de son pseudonyme
+        et de son mot de passe. Il peut tenter de se logger en tant que Joueur ou en tant qu'Admin, mais le serveur lui
+        dira qu'il y a un problème de connexion s'il n'a pas le droit. Il y aura aussi affichage d'une erreur si on
+        essaie de créer un compte dont le nom et prénom sont déjàs dans la BD ou si on essaie de se connecter et qu'il y
+        a une erreur dans nos identifiants.
+    </p>
+
+    <p>
+        Lorsqu'on se connecte (peu importe le bouton), le JS nous redirige en appelant club.php avec un GET. Ceci nous
+        amène directement au query avec un état "initial": on regarde toutes les heures de demain sur tous les terrains.
+    </p>
+
+    <p>
+        Cette page de query est presque identique pour l'admin et pour le joueur. Tous deux ont un div (appelons-le
+        "terrains") qui affiche les informations sur des terrains en haut de la page, puis un div qui affiche une liste
+        juste en bas (ses réservations pour le joueur, et les joueurs pour l'admin).
+    </p>
+
+    <p>
+        Terrains a sensiblement la même apparence pour le joueur et pour l'admin. Voici ses sections:
+    </p>
+
+    <dl>
+        <dt>Form</dt>
+        <dd>
+            C'est le moteur de filtres pour la grille à afficher. On peut choisir la date, tous les terrains ou un en
+            particulier et en fonction de l'heure:
+        </dd>
+        <dd>
+            Pour quelle heure (une en particulier ou toutes). De plus, même si le joueur peut seulement faire des
+            actions (annuler/réserver) sur la journée même ou celle de demain, il pourrait apprécier de voir
+            l'historique des réservations sous forme tabulaire. On lui laisse donc choisir la date à sa guise, mais le
+            serveur lui dira quand même une erreur s'il essaie de faire des choses interdites.
+        </dd>
+        <dd>
+            La seule différence pour l'admin c'est qu'on a renommé la sélection d'heure à "From" et qu'on en a
+            ajouté une deuxième appelée "To". L'admin peut les utiliser pour sélectionner une tranche d'heures de
+            "From" à "To" (si un des deux est mit à "all", on ignore l'autre et on sort toutes les heures).
+        </dd>
+        <dt>Grille</dt>
+        <dd>
+            C'est la grille des disponibiltés (et de l'historique si dans le Form on prend une date passée). Elle est
+            quasi-identique pour le joueur et pour l'admin. On y a implémenté une forme de sélection: si on hover sur
+            une plage horaire on change sa couleur, et si on clique dessus le JS se souvient de l'élément sélectionné (
+            voir la section sur le JS dans la section sur le code). De plus, si le texte de l'item est trop grand pour
+            sa boîte, on n'a qu'à placer le curseur sur l'item et il va s'agrandir pour montrer le contenu.
+        </dd>
+        <dd>
+            Les disponibilités sont marquées "Free" et les terrains déjà réservés sont marqués "Taken" (et "You" si
+            c'est en fait l'usager connecté en ce moment qui a fait la réservation).
+        </dd>
+        <dd>
+            Les disponibilités sont marquées "Free" et les terrains déjà réservés sont marqués avec l'information du
+            joueur qui a fait la réservation.
+        </dd>
+        <dt>Opérations</dt>
+        <dd>
+            Permet à l'usager de faire des réservations sur les items de la grille. Seulement disponible pour le joueur.
+        </dd>
+        <dd>
+            On retrouve un bouton pour faire une réservation ou annuler la réservation de la plage horaire sélectionnée
+            (voir l'explication de la grille). Si on fait une opération illégale un div d'erreur avec un message
+            approprié apparaîtra sous Opérations.
+        </dd>
+    </dl>
+
+    <p>
+        Puis, on a la Liste. Elle affiche toutes les réservations faites par le joueur pour le joueur et la liste de
+        tous les joueurs pour l'admin. Cette liste est populée automatiquement, dès que la page charge: on a en effet
+        pas besoin de paramètres pour les recherches concernées, et on peut donc facilement les afficher.
+    </p>
+
+    <h3>Commentaires sur le CSS</h3>
+
+    <p>
+        Le CSS utilise beaucoup de flexbox et de css-grid. Les grilles et listes sont est effet toutes faites avec
+        css-grid pour offrir un interface un peu plus réactif à l'usager. De plus, ceci nous permet de s'assurer que
+        tout est bien divisé en colonnes et en lignes. On peut aussi facilement centrer les items de grilles et de
+        flexbox, ce qui est un bonus.
+    </p>
+
+    <p>
+        Des classes spécifiques ont été crées pour simplifier le css. On a aussi utilisé des variables css pour éviter
+        de se mélanger dans les couleurs et les grosseurs.
+    </p>
+
+    <ul>
+        <li>
+            --border-size est la grosseur standard des bordure de notre page.
+        </li>
+        <li>
+            --accent-color est la couleur d'accent de notre page.
+        </li>
+        <li>
+            --main-color est la couleur principale de ntore page.
+        </li>
+        <li>
+            --half-accent-color est --accent-color avec 50% de transparence
+        </li>
+        <li>Centered utilise une solution tirée de
+            <a href="https://css-tricks.com/centering-css-complete-guide/">ce site utile</a> pour centrer.
+        </li>
+        <li>
+            Accent met l'accent sur un élément en le colorant avec --accent-color
+        </li>
+        <li>
+            Pretty fait un beau div avec une bordure arrondie de --border-size et de couleur --main-color.
+        </li>
+        <li>
+            Input-submit fait un bel élément de input de couleur --accent-color qui change d'apparence lorsqu'on hover.
+        </li>
+    </ul>
+
+    <h3>Commentaires sur le code</h3>
+
+    <h4>Séparation POST vs GET</h4>
+
+    <p>
+        On utilise GET pour les opérations de contenant pas d'informations personelles. Les
+        recherches pour la Grille et la Liste sont donc des GET: on a seulement besoin d'envoyer les informations du
+        Form par le réseau, on traite le ID et les permissions par PHP. Faire et annuler une réservation est donc aussi
+        des GET: on n'a qu'à envoyer la date, l'heure et le terrain par le réseau, on traite le ID et les permissions
+        par PHP.
+    </p>
+
+    <p>
+        On utilise POST pour les opérations confidentielles. Les login et la création d'usagers sont donc des POST. La
+        demande d'information sur l'état du serveur est aussi un POST puisqu'on reçoit une réponse potentiellement
+        dangereuse. La demande de logout est aussi un POST pour qu'elle soit dans la même catégorie que les logins et
+        que la création d'usagers.
+    </p>
+
+    <h4>JS</h4>
+
+    <p>
+        Bien qu'on ait utilisé JS ainsi que PHP, on remarque que le PHP fait la vaste, vaste majorité du travail. En
+        fait, le JS ne fait qu'appeler le PHP dans la grande majorité de ses utilisations. On a donc deux parties pour
+        le JS: le traitement d'apparence et le traitement de AJAX.
+    </p>
+
+    <p>
+        Traitement de l'apparence de la page: on a ajouté des "listener" de click sur les div de la grille et de la
+        liste. Lorsqu'on clique, on change la couleur de background de l'élément. De plus, si l'élément est un élément
+        de la grille, on sauvegarde le ID de l'élément pour pouvoir faire des réservations et annulations (voir la
+        section de la Grille dans la section sur le PHP). De plus, on traite le z-index du div de login pour l'afficher
+        ou le cacher au besoin.
+    </p>
+
+    <p>
+        Traitement de AJAX: on traite avec AJAX les choses qui pourraient potentiellement échouer (donc, les POST (voir
+        la section sur les POST ci-haut)). Donc, le login et la création d'usager sont traités avec AJAX: on envoie le
+        POST, et si la réponse indique un problème, on affiche un message d'erreur sans rafraichir la page. Idem pour
+        les réservatations et les annulations: on tente de faire l'opération et si elle échoue on peut utiliser AJAX
+        pour afficher une erreur. Dans les deux cas, on rafraîchit la page pour réfléter les changements d'état du
+        serveur. Toutes les requêtes dans cette liste se font à backend.php. Leur traitement se trouve dans la section
+        sur backend.php.
+    </p>
+
+    <ul>
+        <li>
+            Login et createUser: si on reçoit "FAILURE" on sait que le login a échoué et on affiche un message d'erreur.
+            Sinon, on change l'URL du browser du client vers une requête standard pour la Grille.
+        </li>
+        <li>
+            Réservation et annulation: on fait un POST. Si on reçoit "FAILURE", on affiche un message d'erreur. Sinon,
+            on fait un "refresh" sur la page pour que l'usager voit que sa requête a été sauvegardée dans la BD. Le PHP
+            (voir ci-bas) se charge d'updater la grille.
+        </li>
+        <li>
+            State: On appelle backend.php en lui demandant l'état de la $_SESSION. Si l'usager est connecté, on ne fait
+            pas remonter le div de login (comme décrit dans la section HTML).
+        </li>
+    </ul>
+
+    <h4>PHP</h4>
+
+    <p>
+        Le PHP est somme toute assez simple. Dans backend.php on a le traitement des requêtes faites avec AJAX alors que
+        les requêtes faites avec des GET normaux sont traitées avec club.php. Cette séparation nous permet de pouvoir
+        traiter les URL contenant des GET vers club.php simplement, sans aucun traitement de JS: club.php applique
+        simplement son traitement de GET et utilise "echo" pour construire la page adéquatement. Backend.php s'occupe
+        des opérations qui peuvent échouer. Il serait difficile de traiter cela dans la page principale (club.php)
+        puisque "exit()" simplifie beaucoup le traitement de backend.php. Echo serait aussi étrange si le code de
+        backend.php était dans club.php: il faudrait empêcher de echo dans le HTML pour pouvoir echo dans le JS (ce qui
+        est possible avec un exit() bien placé, mais ça reste embêtant).
+    </p>
+
+    <p>
+        Les deux fichiers PHP principaux de notre TP utilisent un troisième, "db.php", qui définit nos identifiants pour
+        la BD utilisée ainsi que les fonctions d'ouverture ou de connection.
+    </p>
+
+    <p>
+        Traitement des GET non-AJAX en PHP (voir le code PHP aux environs des éléments expliqués pour des commentaires
+        de code): club.php
+    </p>
+
+    <dl>
+        <dt>
+            Form
+        </dt>
+        <dd>
+            On ajoute des valeurs par défaut aux éléments de Form pour qu'ils réflètent les informations qui se trouvent
+            dans l'URL GET (voir la section Grille ci-bas), pour que l'usager puisse lire ce qui est affiché
+            présentement dans la Grille (et pour qu'il puisse raffiner sa recherche sans repartir de zéro).
+        </dd>
+        <dd>
+            On ne met qu'un input d'heure et on l'appelle "Hour".
+        </dd>
+        <dd>
+            On met deux input d'heures et on les appelles "From" et "To". Si un des deux paramètres d'heure du GET est
+            "all", on met la valeur de défaut des deux à "all".
+        </dd>
+        <dt>
+            Grille
+        </dt>
+        <dd>
+            On commence par traiter l'URL du GET. Voici les valeurs qu'on prend dépendemment du GET:
+
+            <ul>
+                <li>day: si la date n'était pas "set" dans le GET, on prend la date de demain</li>
+                <li>hourLo: si hourHi ou hourLo étaient "all", hourLo devient 6. Sinon, on prend hourLo bêtement</li>
+                <li>hourHi: si hourHi ou hourLo étaient "all", hourHi devient 20. Sinon, on prend hourHi bêtement</li>
+                <li>
+                    player: ceci n'est pas pris du GET. On prend simplement la valeur du ID dans la $_SESSION si c'est
+                    un joueur et "admin" si c'est un admin
+                </li>
+                <li>
+                    field: ceci est pris bêtement du GET
+                </li>
+            </ul>
+
+            <p>On construit un header pour la grille (les noms des colonnes) de forme (#T, hourLo .. hourHi)</p>
+            <p>
+                On appelle <span class="sql">all_on_day(day, hourLo, hourHi, field, player)</span> et on définit une
+                variable $grille. Pour chaque $row dans la valeur de retour on ajoute un div contenant $row[2] à une
+                ligne qui commence par le numéro du terrain concerné (de forme (#T,
+                [disponibilité à hourLo]..[disponibilité à hourhi])). On ajoute ensuite le tout à la grille. Noter qu'on
+                donne à chaque plage horaire un ID de forme "#T:DATE:HEURE". Comme ça on a les informations (voir la
+                section sur l'apparence de la page en JS) pour les opéarations de réservation/annulation dans le JS
+                lorsqu'on fait la requête AJAX (voir la section sur AJAX).
+            </p>
+        </dd>
+        <dd>
+            Comme mentionné plus tôt, on affiche "Taken", "You", ou "Free" selon le cas pour la disponibilité.
+        </dd>
+        <dd>
+            Comme mentionné plus tôt, on affiche les informations du joueur ayant fait la réservation ou "Free" selon le
+            cas pour la disponibilité.
+        </dd>
+        <dt>
+            Opérations
+        </dt>
+        <dd>
+            Seulement si $_SESSION['as_admin'] est faux: on met des boutons qui appellent les opérations sur les
+            réservations et les annulations. Voir la section sur AJAX pour ces opérations.
+        </dd>
+        <dt>
+            Liste
+        </dt>
+        <dd>
+            Les deux listes sont presque identiques. Il y a trois colonnes qui ont chacune un titre. La liste elle-même
+            a un titre. On appelle la procédure appropriée de notre BD SQL. Pour chaque $row dans le résultat on ajoute
+            les éléments du row dans un div qui fait office de ligne da la liste. Puis, on ajoute le tout au css-grid
+            qui fait office de liste.
+        </dd>
+        <dd>
+            La fonction appelée est <span class="sql">all_reserves($_SESSION['ID'])</span>.
+        </dd>
+        <dd>
+            La fonction appelée est <span class="sql">all_users()</span>.
+        </dd>
+    </dl>
+
+    <p>
+        Traitement des POST et des GET AJAX en PHP (voir le code PHP aux environs des éléments expliqués pour des
+        commentaires de code): backend.php
+    </p>
+
+    <ul>
+        <li>
+            POST:
+            <ul>
+                <li>
+                    Login: on appelle <span class="sql">login(username, password)</span> avec le pseudonyme et mot de passe que
+                    l'appel AJAX du JS nous as envoyé. Si on ne reçoit pas le ID de l'usager en retour c'est que quelque chose
+                    ne fonctionne pas et on retourne "FAILURE".
+                </li>
+                <li>
+                    Create user: on appelle <span class="sql">create_user(nom, prenom, password, username)</span> avec les
+                    arguments reçus de l'appel AJAX que le JS a fait. Si on ne reçoit pas le ID de l'usager en retour c'est que
+                    quelque chose ne fonctionne pas et on retourne "FAILURE".
+                </li>
+                <li>
+                    Pour les deux cas ci-haut, on essaie ensuite d'appeller <span class="sql">is_admin</span> et
+                    <span class="sql">is_login</span> avec le ID qu'on a reçu. On ne laisse l'usager se login en tant qu'admin
+                    qui si la BD nous dit qu'il en est un. On sauvegarde ensuit dans la $_SESSION le ID, et si l'usager est un
+                    joueur, un admin, et s'il est connecté en tant que l'un ou l'autre.
+                </li>
+                <li>
+                    Logout: on détruit simplement la $_SESSION.
+                </li>
+                <li>
+                    State: on retourne "none" si il n'y a pas de session.
+                </li>
+            </ul>
+        </li>
+        <li>
+            GET:
+            <ul>
+                <li>
+                    Reserve: on appelle la procédure
+                    <span class="sql">reserve(terrain, jour, heure, id du joueur)</span> de notre BD. On retourne
+                    directement la réponse de la BD au AJAX et le JS se chargera du traitement.
+                </li>
+                <li>
+                    Unreserve: on appelle la procédure
+                    <span class="sql">unreserve(terrain, jour, heure, id du joueur)</span> de notre BD. On retourne
+                    directement la réponse de la BD au AJAX et le JS se chargera du traitement.
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>SQL</h4>
+
+    <p>Notre modèle entité-relation est le suivant:</p>
+    <ul>
+        <li>
+            Individu(ID, nom, prenom, mot_de_passe, login) avec ID la clé primaire.
+        </li>
+        <li>
+            Joueur(ID) avec ID une clé étrangère vers Individu.
+        </li>
+        <li>
+            Gestionnaire(ID) avec ID une clé étrangère vers Individu.
+        </li>
+        <li>
+            Terrain(ID) avec ID le numéro du terrain et la clé primaire.
+        </li>
+        <li>
+            Plages(ID) avec ID l'heure de la plage horaire et la clé primaire.
+        </li>
+        <li>
+            Reservation(T_ID, R_date, Heure, J_ID) avec T_ID le numéro du terrain et R_date la date de la réservation.
+            (T_ID, R_date, Heure) est la clé primaire, J_ID est une clé étrangère vers Joueur et T_ID est une clé
+            étrangère vers Terrain. Heure est une clé étrangère vers Plages.
+        </li>
+    </ul>
+
+    <p>D'après ce diagramme:</p>
+    <div><img src="diagramme.svg" alt="diagramme sql" height="400"/></div>
+
+    <p>
+        Fonctionnement de la BD: on a une table d'individus. La table Joueur est simplement la liste des ID des
+        Individus qui sont des joueurs. Idem pour Gestionnaire et les admins. Terrain est la liste des terrains (si dans
+        le futur on veut rajouter des terrains il serait facile d'ajouter un ID à Terrain). Une réservation lie un
+        Joueur et un Terrain lors d'une certaine date et d'une certaine heure.
+    </p>
+
+    <p>
+        Génération de la BD: on a écrit un script python qui lit un CSV de "sample data" de personnes trouvé sur
+        internet et qui génère des CSV pour les tables décrites ci-haut. En appelant le script init.sh, on lance DDL.sql
+        qui crée les tables, puis populate.sql qui place les CSV dans les tables (avec un appel à LOAD DATA INFILE).
+    </p>
+
+    <p>
+        On a définit des noms de fonctions pour illustrer le comportement de la BD. Ces fonctions n'existent pas
+        vraiment: il faut aller voir dans le code SQL l'endroit où on dit qu'on les utilise pour voir leur code. On a
+        mit des paramètres, mais c'est seulement à titre explicatif.
+    </p>
+
+    <ul>
+        <li>
+            login (uname VARCHAR(255), mdp VARCHAR(255)): retourne le ID de l'individu identifié par ces paramètres et
+            rien si aucun individu n'a été trouvé.
+        </li>
+        <li>
+            create_user(name VARCHAR(255), fname VARCHAR(255), mdp VARCHAR(30), uname VARCHAR(30)): crée l'individu et
+            retourne le ID qu'on lui assigne. Si name et fname sont déjà dans la BD, on retourne rien et on ne crée pas
+            l'individu.
+        </li>
+        <li>
+            is_admin (ID INTEGER): retourne oui ou non selon l'appartenance de ID à Gestionnaire
+        </li>
+        <li>
+            is_player (ID INTEGER): retourne oui ou non selon l'appartenance de ID à Joueur
+        </li>
+        <li>
+            all_on_day(day DATE, hourLo VARCHAR(3), hourHi VARCHAR(3), field VARCHAR(3), player VARCHAR(30)): retourne
+            une table de forme (T_ID, Heure, X) pour toutes les heures de hourLo à hourHi et
+            soit tous les terrains si field est "all" ou seulement un si field pour être "casté" à un INTEGER. X est
+            "Free" si la plage horaire est libre. Si on est un Joueur, X est "You" ou "Taken" dépendemment de si la
+            réservation nous appartient ou pas. Si on est un admin, X est les informations du joueur à qui appartient la
+            réservation.
+        </li>
+        <li>
+            reserve(terrain INTEGER, day DATE, hour INTEGER, player_id INTEGER): fait la réservation du terrain lors de
+            day à l'heure hour par le joueur player_id si et seulement si la date est celle de demain, il n'y a pas déjà
+            une réservation à cet plage horaire et si le player_id n'as pas une autre réservation lors de cette journée.
+            Retourne "FAILURE" ou "SUCCESS" selon le cas.
+        </li>
+        <li>
+            unreserve(terrain INTEGER, day DATE, hour INTEGER, player_id INTEGER): annulue la réservation du terrain
+            lors de day à l'heure hour par le joueur player_id si et seulement si la date est celle de demain ou
+            d'aujourd'hui, la réservation appartient à player_id et l'heure à laquelle on appelle cette commande n'est
+            pas après l'heure de la réservation (si on est le jour même). Retourne "FAILURE" ou "SUCCESS" selon le cas.
+        </li>
+        <li>
+            all_users(): retourne tous les joueurs
+        </li>
+        <li>
+            all_reserves(player_id INTEGER): retourne toutes les réservations faites par le joueur player_id
+        </li>
+    </ul>
+
+</body>
+</html>

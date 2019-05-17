@@ -1,143 +1,134 @@
-set search_path to kijiji;
 
-/*SETTERS*/
-/*Insert a new individu to the corresponding table*/
-/*TODO the id should be extracted from the actual table, not 
-  pass as an argument ! Apply to all these setters using id*/
-CREATE OR REPLACE FUNCTION new_individu(id INT, email VARCHAR, mot_de_passe VARCHAR, pseudonyme VARCHAR,telephone CHAR, adresse VARCHAR)
-RETURNS void AS $$
+USE gautchar_IFT3225TP3;
+
+/* select login('Antonio500', 'HVA90YJU7'); */
+CREATE FUNCTION login (uname VARCHAR(255), mdp VARCHAR(255))
+RETURNS INTEGER
+READS SQL DATA
+RETURN
+(
+    SELECT ID FROM Individu WHERE login=uname AND mot_de_passe=mdp
+);
+
+CREATE FUNCTION is_admin (ID INTEGER)
+RETURNS BINARY
+READS SQL DATA
+RETURN
+(
+    SELECT(EXISTS(SELECT 1 FROM Gestionnaire WHERE ID=Gestionnaire.ID))
+);
+
+CREATE FUNCTION is_player (ID INTEGER)
+RETURNS BINARY
+READS SQL DATA
+RETURN
+(
+    SELECT(EXISTS(SELECT 1 FROM Joueur WHERE ID=Joueur.ID))
+);
+
+DELIMITER $$
+CREATE FUNCTION used_by (field INTEGER, day DATE, hour INTEGER, player_id VARCHAR(30))
+RETURNS VARCHAR(540)
 BEGIN
-	INSERT INTO individu VALUES
-	(id,email,mot_de_passe,pseudonyme,telephone,adresse);
-END; $$
-LANGUAGE 'plpgsql';
+	DECLARE player INTEGER;
+	SET player = (SELECT J_ID FROM Reservation WHERE T_ID=field AND R_date=day AND Heure=hour);
 
-/*Insert a new expert/categories pair to the expert table*/
-CREATE OR REPLACE FUNCTION new_expert_cat(id_expert INT, nom_categorie VARCHAR)
-RETURN void AS $$
+	IF player IS NULL THEN
+		RETURN "Free";
+	ELSEIF player=CAST(player_id as UNSIGNED) THEN
+		RETURN "You";
+	ELSEIF player_id='admin' THEN
+		RETURN (SELECT CONCAT("User: ", login, ". Name: ", nom, ". First name: ", prenom, ".") FROM Individu WHERE Individu.ID=player);
+	ELSE
+		RETURN "Taken";
+	END IF;
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION create_user(name VARCHAR(255), fname VARCHAR(255), mdp VARCHAR(30), uname VARCHAR(30))
+RETURNS INT
 BEGIN
-	INSERT INTO expert VALUES
-	(id_expert, nom_categorie);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Insert a new item to the corresponding table*/
-CREATE OR REPLACE FUNCTION new_item(id INT, prix INT, titre VARCHAR, description VARCHAR, quantite INT, condition INT, nom_categorie VARCHAR, etat STATUS)
-RETURN void AS $$
-BEGIN
-	INSERT INTO item VALUES
-	(id,prix,titre,description,quantite,condition,nom_categorie,etat);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Insert a new offre to the corresponding table*/
-CREATE OR REPLACE FUNCTION new_offre(no_offre INT, id_acheteur INT, id_annonceur INT, id_item INT, prix INT, date DATE, date_val DATE)
-RETURN void AS $$
-BEGIN
-	INSERT INTO offre VALUES
-	(no_offre,id_acheteur,id_annonceur,id_item,prix,date,date_val);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Insert a new proposition to the corresponding table*/
-CREATE OR REPLACE FUNCTION new_proposition(no_prop INT, id_annonceur INT, id_item INT, date DATE)
-RETURN void AS $$
-BEGIN
-	INSERT INTO proposition VALUES
-	(no_prop,id_annonceur,id_item,date);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Insert a new evaluation to the corresponding table*/
-CREATE OR REPLACE FUNCTION new_evaluation(no_eval INT, id_expert INT, prix INT, date DATE, id_item INT ,date_val DATE)
-RETURN void AS $$
-BEGIN
-	INSERT INTO evaluation VALUES
-	(no_eval, id_expert, prix, date, id_item, date_val);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Function to search an item*/
-CREATE OR REPLACE FUNCTION search_item(annonceur_id INT, categorie VARCHAR, prix_lo INT, prix_hi INT, etat STATUS)
-RETURNS TABLE (
-    	ID INT,
-	Prix INT,
-	Titre VARCHAR,
-	Description VARCHAR,
-	Quantite INT,
-	Condition INT,
-	Nom_categorie VARCHAR,
-	Etat STATUS
-) AS $$
-DECLARE
+	DECLARE newID INT;
+	SET newID = (SELECT max(ID)+1 FROM Individu);
 	
-BEGIN
-	RETURN QUERY
-		SELECT * FROM item
-		WHERE
-			(categorie IS NULL OR item.Nom_categorie=categorie)
-			AND (prix_lo IS NULL OR item.Prix > prix_lo)
-			AND (prix_hi IS NULL OR item.Prix < prix_hi)
-			AND (etat IS NULL OR item.etat=etat) 
-			AND (annonceur_id IS NULL 
-				OR EXISTS(SELECT 1 FROM proposition WHERE proposition.ID_annonceur=annonceur_id AND item.ID=proposition.ID_item) 
-			);
-END; $$
-LANGUAGE 'plpgsql';
-
-/*Function to return the childs of a category, if the boolean
-  only_one is set to true, only return the direct child otherwise 
-  the whole set of child/grandchild ect is return*/
-CREATE OR REPLACE FUNCTION cat_recurs(cat VARCHAR, only_one BOOLEAN)
-RETURNS TABLE (
-	Nom VARCHAR
-) AS $$
-DECLARE
-	rec RECORD;
-BEGIN
-	IF only_one THEN
-		RETURN QUERY SELECT Sous_categorie FROM sous_categorie WHERE Categorie=cat;
+	IF EXISTS(SELECT 1 FROM Individu WHERE nom=name AND prenom=fname) THEN
+		RETURN NULL;
 	ELSE
-		RETURN QUERY SELECT cat;
-		FOR rec IN SELECT Sous_categorie FROM sous_categorie WHERE Categorie=cat
-		LOOP
-			RETURN QUERY SELECT * FROM cat_recurs(rec.Sous_categorie);
-		END LOOP;
+		INSERT INTO Individu VALUES (newID, name, fname, mdp, uname);
+		INSERT INTO Joueur VALUES (newID);
+		RETURN newID;
 	END IF;
-END; $$
-LANGUAGE 'plpgsql';
+END;
+$$
+DELIMITER ;
 
-/*Function to query from the list of item*/
-CREATE OR REPLACE FUNCTION cat_items(annonceur_id INT, cat VARCHAR, prix_lo INT, prix_hi INT, etat STATUS)
-RETURNS TABLE (
-	ID INT,
-	Prix INT,
-	Titre VARCHAR,
-	Description VARCHAR,
-	Quantite INT,
-	Condition INT,
-	Nom_categorie VARCHAR,
-	Etat STATUS
-) AS $$
-DECLARE
-	rec RECORD;
+DELIMITER $$
+CREATE PROCEDURE all_on_day(day DATE, hourLo VARCHAR(3), hourHi VARCHAR(3), field VARCHAR(3), player VARCHAR(30))
 BEGIN
-	RETURN QUERY SELECT * FROM search_item(annonceur_id, cat, prix_lo, prix_hi, etat);
-	FOR rec IN SELECT * FROM cat_recurs(cat, FALSE)
-	LOOP
-		RETURN QUERY SELECT * FROM search_item(annonceur_id, rec.Nom, prix_lo, prix_hi, etat);
-	END LOOP;
-END; $$
-LANGUAGE 'plpgsql';
+	DECLARE x INTEGER;
 
-/*Function that validate the connection of a user*/
-CREATE OR REPLACE FUNCTION login(param VARCHAR, mdp VARCHAR)
-RETURNS BOOLEAN AS $$
+	CREATE TEMPORARY TABLE hourTable (h INTEGER NOT NULL AUTO_INCREMENT, PRIMARY KEY  (h));
+	INSERT INTO hourTable VALUES(hourLo);
+	SET x=hourLo+1;
+
+	WHILE x<= hourHi DO
+		INSERT INTO hourTable VALUES (NULL);
+		SET x=x+1;
+	END WHILE;
+
+	SELECT f, h, used_by(f, day, h, player) as u FROM (SELECT * FROM (SELECT ID as f FROM Terrain WHERE field='all' OR CAST(field AS UNSIGNED)=Terrain.ID) as t CROSS JOIN hourTable) AS temp ORDER BY f, h;
+		
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE reserve(terrain INTEGER, day DATE, hour INTEGER, player_id INTEGER)
 BEGIN
-	IF EXISTS(SELECT * FROM individu WHERE (param=Pseudonyme OR param=Email) AND Mot_de_passe=mdp) THEN
-		RETURN TRUE;
+	IF EXISTS(SELECT 1 FROM Reservation WHERE R_date=day AND J_ID=player_id) /* Verifie si le joueur a une reservation ce jour-la */
+		OR EXISTS(SELECT 1 FROM Reservation WHERE T_ID=terrain AND R_date=day AND heure=hour) /* Verifie si la plage horaire est deja prise */
+		OR DATEDIFF(day, CURDATE()) != 1 THEN /* Verifie si on est la veille */
+
+		SELECT 'FAILURE';
 	ELSE
-	  RETURN FALSE;
-	END IF;
-END; $$
-LANGUAGE 'plpgsql';
+		INSERT INTO Reservation VALUES(terrain, day, hour, player_id);
+		SELECT 'SUCCESS';
+	END IF;	
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE unreserve(terrain INTEGER, day DATE, hour INTEGER, player_id INTEGER)
+BEGIN
+	IF NOT EXISTS(SELECT 1 FROM Reservation WHERE T_ID=terrain AND R_date=day AND heure=hour) 
+			OR (SELECT J_ID FROM Reservation WHERE T_ID=terrain AND R_date=day AND heure=hour)!=player_id 
+			OR DATEDIFF(day, CURDATE()) < 0 OR (day=CURDATE() AND HOUR(CURRENT_TIME()) > hour) THEN
+		SELECT 'FAILURE';
+	ELSE
+		DELETE FROM Reservation WHERE T_ID=terrain AND R_date=day AND heure=hour;
+		SELECT 'SUCCESS';
+	END IF;	
+END;
+$$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE PROCEDURE all_users()
+BEGIN
+	SELECT login, nom, prenom FROM Individu, Joueur WHERE Individu.ID=Joueur.ID;	
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE all_reserves(player_id INTEGER)
+BEGIN
+	SELECT R_date, Heure, T_ID FROM Reservation WHERE J_ID=player_id;	
+END;
+$$
+DELIMITER ;

@@ -1,0 +1,46 @@
+#nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+    align-items: center;
+
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+dt::after {
+    content: ":";
+}
+
+dt + dd::before {
+    content: ">";
+}
+
+dt + dd + dd::before {
+    content: "⚽";
+}
+
+dt + dd + dd + dd::before {
+    content: "🖋️";
+}
+
+.sql {
+    color: #FF5252;
+}
+
+.grid-full {
+    grid-column: 1/-1;
+}
+
+#nav > * {
+    text-align: center;
+}

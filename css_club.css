@@ -1,0 +1,240 @@
+:root {
+    --border-size: 0.25em;
+    --accent-color: #FF5252;
+    --main-color: #9E9E9E;
+    --half-accent-color: #FF525288;
+}
+
+body {
+    margin: 0;
+}
+
+.centered {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#login-wrap {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: white;
+
+    z-index: 1;
+}
+
+#login-dialog {
+    width: 20%;
+    position: fixed;
+
+    background-color: white;
+
+
+
+    text-align: center;
+}
+
+.pretty {
+    border: var(--border-size) solid var( --main-color);
+    border-radius: 1em;
+    padding: 1em;
+
+    text-align: center;
+}
+
+#login-dialog > form, #login-dialog > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+}
+
+#login-dialog > div {
+    vertical-align: center;
+}
+
+.input-submit {
+    background-color: var(--accent-color);
+    padding: 0.5em;
+    border: var(--border-size) solid transparent;
+}
+
+.input-submit:hover {
+    border: var(--border-size) solid var(--main-color);
+}
+
+.input-text {
+    height: 1em;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    border-bottom: thin solid var(--accent-color);
+    text-align: center;
+}
+
+.grid-full {
+    grid-column: 1/-1;
+}
+
+.horizontal-divider {
+    border-bottom: var(--border-size) solid var(--main-color);
+    margin: 1em var(--border-size);
+}
+
+.vertical-divider {
+    border-right: var(--border-size) solid var(--main-color);
+    height: 100%;
+    width: 0;
+}
+
+a {
+    text-decoration: none;
+    text-align: center;
+    color: black;
+}
+
+nav {
+    width: 100%;
+}
+
+nav > a {
+    z-index: 31;
+    position: fixed;
+    left: 100%;
+    transform: translateX(-100%);
+}
+
+#hidey {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 20;
+}
+
+#view-wrap {
+    margin-top: 2.5vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    width: 100%;
+
+    z-index: 30;
+}
+
+#view-wrap > div {
+    position: relative;
+    flex: 1;
+    width: 90%;
+
+    z-index: 30;
+}
+
+#terrain-form {
+    display: grid;
+}
+
+label {
+    display: block;
+}
+
+.view {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-gap: 1em;
+}
+
+.button-holder {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+}
+
+nav {
+    z-index: 29;
+}
+
+/* https://stackoverflow.com/questions/45536537/centering-in-css-grid */
+.display > div {
+    text-align: center;
+
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: stretch;
+}
+
+.selectable:hover {
+    background-color: var( --accent-color);
+
+    /* https://stackoverflow.com/questions/34833815/showing-truncated-text-on-hover-using-css-ellipsis-overlaps-text-below-it */
+    overflow: visible;
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.selectable:focus{
+    background-color: var( --accent-color);
+
+    /* https://stackoverflow.com/questions/34833815/showing-truncated-text-on-hover-using-css-ellipsis-overlaps-text-below-it */
+    overflow: visible;
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.selectable {
+    border: thin solid var( --main-color);
+}
+
+.player-display div {
+    text-align: center;
+}
+
+.player-display > div {
+    display: contents;
+}
+
+.player-display > .user-row:hover div {
+    background-color: var( --accent-color);
+}
+
+.accent {
+    background-color: var( --accent-color);
+}
+
+:focus {
+    outline-color: transparent;
+    outline-style: none;
+}
+
+.Taken {
+    background-color: #212121;
+    color: white;
+}
+
+.You {
+    background-color: var( --half-accent-color);
+}
+
+.middle {
+    border-right: thin solid var( --main-color);
+    border-left: thin solid var( --main-color);
+}
+
+.top {
+    border-bottom: thin solid var( --main-color);;
+}
